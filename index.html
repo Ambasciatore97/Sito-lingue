@@ -1,9 +1,11 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Impara le Lingue</title>
+  <title>Impara inglese, francese e spagnolo gratis | Quiz interattivi</title>
+  <meta name="description" content="Impara lingue straniere gratis con quiz interattivi, pronuncia audio e livelli progressivi. Inglese UK/US, francese e spagnolo.">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -123,10 +125,25 @@
     .hidden {
       display: none;
     }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 10px;
+        padding: 15px;
+      }
+
+      .question {
+        font-size: 20px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <p style="text-align:center; font-weight:bold; color:#2563eb;">
+      Allenati ogni giorno e migliora la tua pronuncia e traduzione in modo semplice 🚀
+    </p>
+
     <h1>Impara le Lingue</h1>
     <p class="subtitle">Allenati con quiz casuali per livello e lingua</p>
 
@@ -242,10 +259,7 @@
     }
 
     function normalizzaTesto(testo) {
-      return testo
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, " ");
+      return testo.toLowerCase().trim().replace(/\s+/g, " ");
     }
 
     function nuovaDomanda() {
