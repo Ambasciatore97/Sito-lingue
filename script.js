@@ -345,6 +345,7 @@ function iniziaSessione() {
   startTimer();
 
   mostraDomandaCorrente();
+  salvaProgresso();
 }
 
 function controllaRisposta() {
@@ -405,8 +406,38 @@ function azionePrincipale() {
       return;
     }
     controllaRisposta();
+    salvaProgresso();{
+  const dati = {
+    sessioneDomande,
+    sessioneIndice,
+    sessioneAttiva,
+    timerSeconds
+  };
+
+  localStorage.setItem("progressiLingue", JSON.stringify(dati));
+}
+
+function caricaProgresso() {
+  const dati = localStorage.getItem("progressiLingue");
+
+  if (!dati) return;
+
+  const parsed = JSON.parse(dati);
+
+  sessioneDomande = parsed.sessioneDomande || [];
+  sessioneIndice = parsed.sessioneIndice || 0;
+  sessioneAttiva = parsed.sessioneAttiva || false;
+  timerSeconds = parsed.timerSeconds || 0;
+
+  if (sessioneAttiva && sessioneDomande.length > 0) {
+    document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
+    mostraDomandaCorrente();
+    startTimer();
+  }
+}
   } else {
     domandaSuccessiva();
+    salvaProgresso();
   }
 }
 
@@ -415,6 +446,7 @@ function domandaPrecedente() {
   salvaRispostaTemporanea();
   sessioneIndice--;
   mostraDomandaCorrente();
+  salvaProgresso();
 }
 
 function domandaSuccessiva() {
@@ -439,7 +471,7 @@ function ascoltaPronuncia() {
 
 function fineSessione() {
   if (!sessioneDomande.length) return;
-
+  
   salvaRispostaTemporanea();
   sessioneAttiva = false;
   stopTimer();
@@ -484,6 +516,7 @@ function fineSessione() {
 
   aggiornaStatistiche();
   aggiornaPulsanti();
+  localStorage.removeItem("progressiLingue");
 }
 
 function ripetiTutte() {
@@ -567,6 +600,7 @@ function chiudiPubblicita() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  caricaProgresso();
   const inputRisposta = document.getElementById("risposta");
   if (inputRisposta) {
     inputRisposta.addEventListener("keydown", function(event) {
@@ -580,3 +614,32 @@ document.addEventListener("DOMContentLoaded", function () {
   aggiornaPulsanti();
   document.getElementById("timerDisplay").textContent = "00:00";
 });
+function salvaProgresso() {
+  const dati = {
+    sessioneDomande,
+    sessioneIndice,
+    sessioneAttiva,
+    timerSeconds
+  };
+
+  localStorage.setItem("progressiLingue", JSON.stringify(dati));
+}
+
+function caricaProgresso() {
+  const dati = localStorage.getItem("progressiLingue");
+
+  if (!dati) return;
+
+  const parsed = JSON.parse(dati);
+
+  sessioneDomande = parsed.sessioneDomande || [];
+  sessioneIndice = parsed.sessioneIndice || 0;
+  sessioneAttiva = parsed.sessioneAttiva || false;
+  timerSeconds = parsed.timerSeconds || 0;
+
+  if (sessioneAttiva && sessioneDomande.length > 0) {
+    document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
+    mostraDomandaCorrente();
+    startTimer();
+  }
+}
