@@ -4,175 +4,999 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Impara lingue gratis | Quiz interattivi</title>
-  <meta name="description" content="Allenati con quiz di inglese, francese e spagnolo. Migliora ogni giorno con livelli automatici e pronuncia audio.">
+  <meta name="description" content="Impara inglese, francese e spagnolo con quiz interattivi, pronuncia audio, livelli e riepilogo finale.">
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      margin: 0;
+    * {
+      box-sizing: border-box;
     }
 
-    .container {
-      max-width: 700px;
-      margin: 20px auto;
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f7;
+      margin: 0;
+      padding: 16px;
+      color: #111827;
+    }
+
+    .app {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .header {
       background: white;
-      padding: 25px;
-      border-radius: 16px;
+      border-radius: 18px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+      margin-bottom: 14px;
+    }
+
+    .title {
+      margin: 0;
+      text-align: center;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      text-align: center;
+      color: #4b5563;
+      font-size: 15px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .panel,
+    .main-card,
+    .summary-card {
+      background: white;
+      border-radius: 18px;
       box-shadow: 0 4px 18px rgba(0,0,0,0.08);
     }
 
-    h1 { text-align: center; }
-
-    .progress-bar {
-      height: 10px;
-      background: #ddd;
-      border-radius: 10px;
-      margin: 15px 0;
+    .panel {
+      padding: 16px;
+      position: sticky;
+      top: 16px;
     }
 
-    .progress {
-      height: 10px;
-      background: #2563eb;
-      border-radius: 10px;
-      width: 0%;
+    .panel h2,
+    .summary-card h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-size: 22px;
     }
 
-    .controls {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .field {
+      margin-bottom: 12px;
     }
 
-    select, input, button {
-      padding: 10px;
-      border-radius: 8px;
+    .field label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    select,
+    input,
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
       font-size: 16px;
+      border: 1px solid #d1d5db;
     }
 
     button {
-      background: #2563eb;
-      color: white;
       border: none;
       cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button.primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    button.primary:hover {
+      background: #1d4ed8;
+    }
+
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    button.secondary:hover {
+      background: #d1d5db;
+    }
+
+    button.success {
+      background: #16a34a;
+      color: white;
+    }
+
+    button.success:hover {
+      background: #15803d;
+    }
+
+    button.warning {
+      background: #ea580c;
+      color: white;
+    }
+
+    button.warning:hover {
+      background: #c2410c;
+    }
+
+    button.danger {
+      background: #dc2626;
+      color: white;
+    }
+
+    button.danger:hover {
+      background: #b91c1c;
+    }
+
+    button.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .stat-box {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .progress-wrap {
+      margin-top: 14px;
+    }
+
+    .progress-label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 12px;
+      width: 0%;
+      background: #2563eb;
+      transition: width 0.3s ease;
+    }
+
+    .main-card {
+      padding: 18px;
+      min-height: 78vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .question-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .question-card {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 14px;
     }
 
     .question {
-      font-size: 22px;
+      font-size: 34px;
+      font-weight: bold;
       text-align: center;
-      margin: 20px 0;
+      line-height: 1.3;
+      min-height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pronunciation {
+      text-align: center;
+      color: #6b7280;
+      min-height: 24px;
+      margin-top: 10px;
+      font-style: italic;
+      font-size: 16px;
     }
 
     .result {
       text-align: center;
+      font-size: 20px;
       font-weight: bold;
-      margin-top: 10px;
+      min-height: 30px;
+      margin: 10px 0 8px;
     }
 
-    @media (max-width: 600px) {
-      .container {
-        margin: 10px;
+    .answer-box {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #1e3a8a;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      line-height: 1.7;
+      display: none;
+      margin-bottom: 14px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .nav-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .helper-text {
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .summary-card {
+      padding: 18px;
+    }
+
+    .summary-card.hidden,
+    .main-card.hidden {
+      display: none;
+    }
+
+    .summary-top {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      max-height: 55vh;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .summary-item {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 12px;
+      line-height: 1.6;
+    }
+
+    .summary-item.correct {
+      border-left: 6px solid #16a34a;
+    }
+
+    .summary-item.wrong {
+      border-left: 6px solid #dc2626;
+    }
+
+    .summary-title {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .summary-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .ad-popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    .ad-content {
+      width: 100%;
+      max-width: 520px;
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        position: static;
+      }
+
+      .main-card {
+        min-height: auto;
+      }
+
+      .question {
+        font-size: 28px;
+        min-height: 80px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 10px;
+      }
+
+      .title {
+        font-size: 26px;
+      }
+
+      .question {
+        font-size: 24px;
+      }
+
+      .action-row,
+      .nav-row,
+      .summary-top,
+      .summary-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
       }
     }
   </style>
 </head>
-
 <body>
-<div class="container">
+  <div class="app">
+    <div class="header">
+      <h1 class="title">Impara le Lingue</h1>
+      <p class="subtitle">Quiz più naturale: controlli la risposta e poi avanzi con lo stesso pulsante.</p>
+    </div>
 
-  <h1>Impara le Lingue 🚀</h1>
+    <div class="layout">
+      <aside class="panel">
+        <h2>Configura sessione</h2>
 
-  <div class="progress-bar">
-    <div class="progress" id="progress"></div>
+        <div class="field">
+          <label for="lingua">Lingua</label>
+          <select id="lingua">
+            <option value="en-GB">Inglese UK</option>
+            <option value="en-US">Inglese US</option>
+            <option value="fr-FR">Francese</option>
+            <option value="es-ES">Spagnolo</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="livello">Livello</label>
+          <select id="livello">
+            <option value="1">Livello 1</option>
+            <option value="2">Livello 2</option>
+            <option value="3">Livello 3</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="numeroDomande">Numero domande</label>
+          <input type="number" id="numeroDomande" min="1" max="50" value="10">
+        </div>
+
+        <button class="primary" onclick="iniziaSessione()">Inizia sessione</button>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-label">Domanda</div>
+            <div class="stat-value" id="domandaAttualeNumero">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Totale</div>
+            <div class="stat-value" id="totaleSessione">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Risposte</div>
+            <div class="stat-value" id="risposteDate">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Corrette</div>
+            <div class="stat-value" id="corrette">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Sbagliate</div>
+            <div class="stat-value" id="sbagliate">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Non viste</div>
+            <div class="stat-value" id="nonViste">0</div>
+          </div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-label">Avanzamento sessione</div>
+          <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <section class="main-card" id="mainCard">
+          <div class="question-top">
+            <div class="badge" id="sessionInfo">Nessuna sessione attiva</div>
+            <div class="badge">Pronuncia nascosta fino alla correzione</div>
+          </div>
+
+          <div class="question-card">
+            <div class="question" id="domanda">Premi "Inizia sessione"</div>
+            <div class="pronunciation" id="pronuncia">Pronuncia: nascosta fino alla correzione</div>
+          </div>
+
+          <input type="text" id="risposta" placeholder="Scrivi qui la risposta">
+
+          <div class="result" id="risultato"></div>
+
+          <div class="answer-box" id="answerBox">
+            <div><strong>Risposta corretta:</strong> <span id="rispostaCorretta"></span></div>
+            <div><strong>Pronuncia:</strong> <span id="pronunciaCorretta"></span></div>
+          </div>
+
+          <div class="action-row">
+            <button class="primary" id="mainActionBtn" onclick="azionePrincipale()">Controlla</button>
+            <button class="secondary" onclick="ascoltaPronuncia()">🔊 Ascolta</button>
+          </div>
+
+          <div class="nav-row">
+            <button class="secondary" id="prevBtn" onclick="domandaPrecedente()">⬅️ Precedente</button>
+            <button class="warning" onclick="fineSessione()">Termina sessione</button>
+          </div>
+
+          <div class="helper-text">
+            Dopo la correzione, lo stesso pulsante centrale ti porta avanti. Se torni indietro, mantiene lo stato della domanda.
+          </div>
+        </section>
+
+        <section class="summary-card hidden" id="summaryBox">
+          <h2>Resoconto finale</h2>
+
+          <div class="summary-actions">
+            <button class="success" onclick="ripetiTutte()">Ripeti tutte</button>
+            <button class="warning" onclick="ripetiErrate()">Ripeti solo errate</button>
+            <button class="secondary" onclick="tornaAllInizio()">Nuova configurazione</button>
+          </div>
+
+          <div class="summary-top">
+            <div class="stat-box">
+              <div class="stat-label">Corrette</div>
+              <div class="stat-value" id="finalCorrette">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Sbagliate</div>
+              <div class="stat-value" id="finalSbagliate">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Totale</div>
+              <div class="stat-value" id="finalTotale">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Percentuale</div>
+              <div class="stat-value" id="finalPercentuale">0%</div>
+            </div>
+          </div>
+
+          <div class="summary-list" id="summaryList"></div>
+        </section>
+      </main>
+    </div>
   </div>
 
-  <div class="controls">
-    <select id="lingua">
-      <option value="en">Inglese</option>
-      <option value="fr">Francese</option>
-      <option value="es">Spagnolo</option>
-    </select>
+  <div class="ad-popup" id="adPopup">
+    <div class="ad-content">
+      <h2>Pubblicità demo</h2>
+      <p>Qui in futuro potremo inserire una pubblicità reale.</p>
+      <p>Per ora è solo una simulazione del popup ogni 40 risposte.</p>
+      <button class="primary" id="skipBtn" onclick="chiudiPubblicita()">Chiudi pubblicità</button>
+      <div id="skipInfo" style="margin-top:10px;color:#6b7280;">Puoi chiuderla quando vuoi.</div>
+    </div>
   </div>
 
-  <div class="question" id="domanda"></div>
+  <script>
+    const domande = {
+      "en-GB": {
+        1: [
+          { domanda: "Traduci 'via cittadina' in inglese", risposteAccettate: ["street"], pronuncia: "stri:t" },
+          { domanda: "Traduci 'carreggiata / strada percorribile' in inglese", risposteAccettate: ["road"], pronuncia: "roud" },
+          { domanda: "Traduci 'cane' in inglese", risposteAccettate: ["dog"], pronuncia: "dog" },
+          { domanda: "Traduci 'gatto' in inglese", risposteAccettate: ["cat"], pronuncia: "cat" },
+          { domanda: "Traduci 'casa' in inglese", risposteAccettate: ["house"], pronuncia: "haus" },
+          { domanda: "Traduci 'pane' in inglese", risposteAccettate: ["bread"], pronuncia: "bred" },
+          { domanda: "Traduci 'sole' in inglese", risposteAccettate: ["sun"], pronuncia: "san" },
+          { domanda: "Traduci 'luna' in inglese", risposteAccettate: ["moon"], pronuncia: "muun" },
+          { domanda: "Traduci 'libro' in inglese", risposteAccettate: ["book"], pronuncia: "buk" },
+          { domanda: "Traduci 'sedia' in inglese", risposteAccettate: ["chair"], pronuncia: "chea" }
+        ],
+        2: [
+          { domanda: "Traduci 'Sto mangiando'", risposteAccettate: ["i am eating", "i'm eating"], pronuncia: "ai am ii-ting" },
+          { domanda: "Traduci 'Lei sta leggendo un libro'", risposteAccettate: ["she is reading a book", "she's reading a book"], pronuncia: "scii iz rii-ding a buk" },
+          { domanda: "Traduci 'Noi stiamo aspettando'", risposteAccettate: ["we are waiting", "we're waiting"], pronuncia: "ui a ueiting" },
+          { domanda: "Traduci 'Sto andando a casa'", risposteAccettate: ["i am going home", "i'm going home"], pronuncia: "ai am gouing houm" },
+          { domanda: "Traduci 'Loro stanno parlando'", risposteAccettate: ["they are talking", "they're talking"], pronuncia: "dhei a to-king" },
+          { domanda: "Traduci 'Io bevo acqua ogni mattina'", risposteAccettate: ["i drink water every morning"], pronuncia: "ai drink uo-ta evri mo-ning" }
+        ],
+        3: [
+          { domanda: "Traduci 'Avrei potuto aiutarti'", risposteAccettate: ["i could have helped you", "i could've helped you"], pronuncia: "ai cud av helpt iu" },
+          { domanda: "Traduci 'Se lo avessi saputo, sarei venuto'", risposteAccettate: ["if i had known, i would have come", "if i'd known, i would've come"], pronuncia: "if ai ad noun, ai wud av kam" },
+          { domanda: "Traduci 'Non sarei uscito con questa pioggia'", risposteAccettate: ["i would not have gone out in this rain", "i wouldn't have gone out in this rain"], pronuncia: "ai wud not av gon aut in dhis rein" },
+          { domanda: "Traduci 'Avrebbero dovuto aspettare di più'", risposteAccettate: ["they should have waited longer", "they should've waited longer"], pronuncia: "dhei sciud av ueited long-ga" }
+        ]
+      },
 
-  <input type="text" id="risposta" placeholder="Scrivi la risposta" style="width:100%">
+      "en-US": {
+        1: [
+          { domanda: "Traduci 'via cittadina' in inglese americano", risposteAccettate: ["street"], pronuncia: "striit" },
+          { domanda: "Traduci 'carreggiata / strada percorribile' in inglese americano", risposteAccettate: ["road"], pronuncia: "roud" },
+          { domanda: "Traduci 'macchina' in inglese americano", risposteAccettate: ["car"], pronuncia: "car" },
+          { domanda: "Traduci 'acqua' in inglese americano", risposteAccettate: ["water"], pronuncia: "uoder" },
+          { domanda: "Traduci 'scuola' in inglese americano", risposteAccettate: ["school"], pronuncia: "skuul" },
+          { domanda: "Traduci 'telefono' in inglese americano", risposteAccettate: ["phone"], pronuncia: "foun" },
+          { domanda: "Traduci 'mare' in inglese americano", risposteAccettate: ["sea"], pronuncia: "sii" },
+          { domanda: "Traduci 'albero' in inglese americano", risposteAccettate: ["tree"], pronuncia: "trii" }
+        ],
+        2: [
+          { domanda: "Traduci 'Sto lavorando adesso'", risposteAccettate: ["i am working now", "i'm working now"], pronuncia: "ai am uorking nau" },
+          { domanda: "Traduci 'Noi stiamo aspettando'", risposteAccettate: ["we are waiting", "we're waiting"], pronuncia: "ui ar ueiting" },
+          { domanda: "Traduci 'Lei sta cucinando'", risposteAccettate: ["she is cooking", "she's cooking"], pronuncia: "scii iz ku-king" },
+          { domanda: "Traduci 'Loro stanno arrivando'", risposteAccettate: ["they are coming", "they're coming"], pronuncia: "dhei ar caming" },
+          { domanda: "Traduci 'Io sto cercando le chiavi'", risposteAccettate: ["i am looking for the keys", "i'm looking for the keys"], pronuncia: "ai am lu-king for dha kiiz" }
+        ],
+        3: [
+          { domanda: "Traduci 'Avrei dovuto chiamarti ieri'", risposteAccettate: ["i should have called you yesterday", "i should've called you yesterday"], pronuncia: "ai sciud av colld iu yesterdei" },
+          { domanda: "Traduci 'Non sarei andato senza di te'", risposteAccettate: ["i would not have gone without you", "i wouldn't have gone without you"], pronuncia: "ai wud not av gon uithaut iu" },
+          { domanda: "Traduci 'Avrebbero potuto farlo meglio'", risposteAccettate: ["they could have done it better", "they could've done it better"], pronuncia: "dhei cud av dan it bedder" },
+          { domanda: "Traduci 'Se fossi stato lì, avrei parlato'", risposteAccettate: ["if i had been there, i would have spoken", "if i'd been there, i'd have spoken"], pronuncia: "if ai ad bin dher, ai wud av spouken" }
+        ]
+      },
 
-  <div class="controls">
-    <button onclick="controlla()">Controlla</button>
-    <button onclick="parla()">🔊</button>
-  </div>
+      "fr-FR": {
+        1: [
+          { domanda: "Traduci 'gatto' in francese", risposteAccettate: ["chat"], pronuncia: "sha" },
+          { domanda: "Traduci 'pane' in francese", risposteAccettate: ["pain"], pronuncia: "pen" },
+          { domanda: "Traduci 'casa' in francese", risposteAccettate: ["maison"], pronuncia: "mezon" },
+          { domanda: "Traduci 'acqua' in francese", risposteAccettate: ["eau"], pronuncia: "o" },
+          { domanda: "Traduci 'libro' in francese", risposteAccettate: ["livre"], pronuncia: "livr" },
+          { domanda: "Traduci 'porta' in francese", risposteAccettate: ["porte"], pronuncia: "port" }
+        ],
+        2: [
+          { domanda: "Traduci 'Io sono pronto'", risposteAccettate: ["je suis prêt"], pronuncia: "ge sui pre" },
+          { domanda: "Traduci 'Noi mangiamo insieme'", risposteAccettate: ["nous mangeons ensemble"], pronuncia: "nu mangeon ensemble" },
+          { domanda: "Traduci 'Lui vive a Parigi'", risposteAccettate: ["il vit à paris"], pronuncia: "il vi a pari" },
+          { domanda: "Traduci 'Lei legge un libro'", risposteAccettate: ["elle lit un livre"], pronuncia: "el li an livr" }
+        ],
+        3: [
+          { domanda: "Traduci 'Se avessi tempo, verrei'", risposteAccettate: ["si j'avais le temps, je viendrais"], pronuncia: "si giavè le tan, ge viandrè" },
+          { domanda: "Traduci 'Avrei voluto parlarne'", risposteAccettate: ["j'aurais voulu en parler"], pronuncia: "giorè voulù an parlè" },
+          { domanda: "Traduci 'Se lo avessi saputo, avrei risposto'", risposteAccettate: ["si je l'avais su, j'aurais répondu"], pronuncia: "si ge lavè sü, giorè repondu" }
+        ]
+      },
 
-  <div class="result" id="risultato"></div>
+      "es-ES": {
+        1: [
+          { domanda: "Traduci 'casa' in spagnolo", risposteAccettate: ["casa"], pronuncia: "casa" },
+          { domanda: "Traduci 'libro' in spagnolo", risposteAccettate: ["libro"], pronuncia: "libro" },
+          { domanda: "Traduci 'acqua' in spagnolo", risposteAccettate: ["agua"], pronuncia: "agua" },
+          { domanda: "Traduci 'sole' in spagnolo", risposteAccettate: ["sol"], pronuncia: "sol" },
+          { domanda: "Traduci 'luna' in spagnolo", risposteAccettate: ["luna"], pronuncia: "luna" },
+          { domanda: "Traduci 'strada / via cittadina' in spagnolo", risposteAccettate: ["calle"], pronuncia: "caie" }
+        ],
+        2: [
+          { domanda: "Traduci 'Sto studiando'", risposteAccettate: ["estoy estudiando"], pronuncia: "estoi estudiando" },
+          { domanda: "Traduci 'Loro stanno arrivando'", risposteAccettate: ["ellos están llegando"], pronuncia: "eios estan iegando" },
+          { domanda: "Traduci 'Io vivo a Madrid'", risposteAccettate: ["vivo en madrid"], pronuncia: "bibo en madrid" },
+          { domanda: "Traduci 'Lei legge un libro'", risposteAccettate: ["ella lee un libro"], pronuncia: "eia lee un libro" }
+        ],
+        3: [
+          { domanda: "Traduci 'Avrei voluto visitare Madrid'", risposteAccettate: ["me habría gustado visitar madrid"], pronuncia: "me avria gustado visitar madrid" },
+          { domanda: "Traduci 'Se avessi saputo tutto, avrei risposto'", risposteAccettate: ["si hubiera sabido todo, habría respondido"], pronuncia: "si ubera sabido todo, avria respondido" },
+          { domanda: "Traduci 'Avremmo potuto restare di più'", risposteAccettate: ["habríamos podido quedarnos más tiempo"], pronuncia: "abriamos podido quedarnos mas tiempo" }
+        ]
+      }
+    };
 
-  <p style="text-align:center">Livello: <span id="livello">1</span></p>
+    let sessioneDomande = [];
+    let sessioneIndice = 0;
+    let sessioneAttiva = false;
 
-</div>
+    function mescolaArray(array) {
+      const copia = [...array];
+      for (let i = copia.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copia[i], copia[j]] = [copia[j], copia[i]];
+      }
+      return copia;
+    }
 
-<script>
-let livello = 1;
-let corrette = 0;
-let totale = 0;
-let domandaCorrente;
+    function normalizzaTesto(testo) {
+      return testo
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " ")
+        .replace(/[’]/g, "'");
+    }
 
-const domande = [
-  {it:"cane", en:"dog", fr:"chien", es:"perro"},
-  {it:"gatto", en:"cat", fr:"chat", es:"gato"},
-  {it:"casa", en:"house", fr:"maison", es:"casa"},
-  {it:"acqua", en:"water", fr:"eau", es:"agua"},
-  {it:"pane", en:"bread", fr:"pain", es:"pan"}
-];
+    function creaRecordDomanda(domandaBase, lingua) {
+      return {
+        domanda: domandaBase.domanda,
+        risposteAccettate: [...domandaBase.risposteAccettate],
+        pronuncia: domandaBase.pronuncia,
+        lingua,
+        rispostaUtente: "",
+        corretta: null,
+        correttaMostrata: domandaBase.risposteAccettate[0],
+        controllata: false
+      };
+    }
 
-function nuovaDomanda(){
-  const lingua = document.getElementById("lingua").value;
-  domandaCorrente = domande[Math.floor(Math.random()*domande.length)];
+    function creaSessione(listaBase, numero, lingua) {
+      return mescolaArray(listaBase)
+        .slice(0, Math.min(numero, listaBase.length))
+        .map(item => creaRecordDomanda(item, lingua));
+    }
 
-  document.getElementById("domanda").innerText =
-    "Traduci: " + domandaCorrente.it + " → (" + lingua + ")";
-}
+    function aggiornaStatistiche() {
+      const totale = sessioneDomande.length;
+      const date = sessioneDomande.filter(x => x.controllata).length;
+      const corrette = sessioneDomande.filter(x => x.corretta === true).length;
+      const sbagliate = sessioneDomande.filter(x => x.corretta === false).length;
+      const nonViste = totale - date;
 
-function controlla(){
-  const lingua = document.getElementById("lingua").value;
-  const risposta = document.getElementById("risposta").value.toLowerCase();
+      document.getElementById("domandaAttualeNumero").textContent = totale ? sessioneIndice + 1 : 0;
+      document.getElementById("totaleSessione").textContent = totale;
+      document.getElementById("risposteDate").textContent = date;
+      document.getElementById("corrette").textContent = corrette;
+      document.getElementById("sbagliate").textContent = sbagliate;
+      document.getElementById("nonViste").textContent = nonViste;
+      document.getElementById("progress").style.width = totale ? ((date / totale) * 100) + "%" : "0%";
 
-  totale++;
+      const linguaSelect = document.getElementById("lingua");
+      const livelloSelect = document.getElementById("livello");
+      const linguaTesto = linguaSelect.options[linguaSelect.selectedIndex].text;
+      const livelloTesto = livelloSelect.options[livelloSelect.selectedIndex].text;
 
-  if(risposta === domandaCorrente[lingua]){
-    corrette++;
-    document.getElementById("risultato").innerText = "✅ Corretto!";
-  } else {
-    document.getElementById("risultato").innerText =
-      "❌ Sbagliato: " + domandaCorrente[lingua];
-  }
+      document.getElementById("sessionInfo").textContent = totale
+        ? `${linguaTesto} • ${livelloTesto} • ${sessioneIndice + 1}/${totale}`
+        : "Nessuna sessione attiva";
+    }
 
-  aggiornaLivello();
-  aggiornaProgress();
-  document.getElementById("risposta").value="";
-  nuovaDomanda();
-}
+    function aggiornaPulsanti() {
+      const prevBtn = document.getElementById("prevBtn");
+      const mainActionBtn = document.getElementById("mainActionBtn");
 
-function aggiornaLivello(){
-  if(corrette % 5 === 0){
-    livello++;
-    document.getElementById("livello").innerText = livello;
-  }
-}
+      prevBtn.disabled = !sessioneAttiva || sessioneIndice === 0;
+      prevBtn.classList.toggle("disabled", prevBtn.disabled);
 
-function aggiornaProgress(){
-  let perc = (corrette % 5) * 20;
-  document.getElementById("progress").style.width = perc + "%";
-}
+      if (!sessioneAttiva || !sessioneDomande.length) {
+        mainActionBtn.textContent = "Controlla";
+        mainActionBtn.className = "primary";
+        return;
+      }
 
-function parla(){
-  const lingua = document.getElementById("lingua").value;
-  const speech = new SpeechSynthesisUtterance(domandaCorrente[lingua]);
-  speech.lang = lingua;
-  speechSynthesis.speak(speech);
-}
+      const item = sessioneDomande[sessioneIndice];
 
-nuovaDomanda();
-</script>
+      if (!item.controllata) {
+        mainActionBtn.textContent = "Controlla";
+        mainActionBtn.className = "primary";
+      } else if (item.corretta) {
+        mainActionBtn.textContent = "Corretto! Vai alla domanda successiva";
+        mainActionBtn.className = "success";
+      } else {
+        mainActionBtn.textContent = "Errato! Vai alla domanda successiva";
+        mainActionBtn.className = "danger";
+      }
+    }
 
+    function mostraDomandaCorrente() {
+      if (!sessioneAttiva || !sessioneDomande.length) return;
+
+      const item = sessioneDomande[sessioneIndice];
+
+      document.getElementById("summaryBox").classList.add("hidden");
+      document.getElementById("mainCard").classList.remove("hidden");
+
+      document.getElementById("domanda").textContent = item.domanda;
+      document.getElementById("risposta").value = item.rispostaUtente || "";
+
+      if (item.controllata) {
+        document.getElementById("pronuncia").textContent = "Pronuncia: " + item.pronuncia;
+        document.getElementById("risultato").textContent = item.corretta ? "✅ Corretto!" : "❌ Sbagliato!";
+        document.getElementById("rispostaCorretta").textContent = item.correttaMostrata;
+        document.getElementById("pronunciaCorretta").textContent = item.pronuncia;
+        document.getElementById("answerBox").style.display = "block";
+      } else {
+        document.getElementById("pronuncia").textContent = "Pronuncia: nascosta fino alla correzione";
+        document.getElementById("risultato").textContent = "";
+        document.getElementById("answerBox").style.display = "none";
+      }
+
+      aggiornaStatistiche();
+      aggiornaPulsanti();
+      document.getElementById("risposta").focus();
+    }
+
+    function salvaRispostaTemporanea() {
+      if (!sessioneAttiva || !sessioneDomande.length) return;
+      sessioneDomande[sessioneIndice].rispostaUtente = document.getElementById("risposta").value;
+    }
+
+    function iniziaSessione() {
+      const lingua = document.getElementById("lingua").value;
+      const livello = document.getElementById("livello").value;
+      const numeroInput = parseInt(document.getElementById("numeroDomande").value, 10) || 10;
+      const base = domande[lingua][livello];
+      const numeroFinale = Math.max(1, Math.min(numeroInput, base.length));
+
+      document.getElementById("numeroDomande").value = numeroFinale;
+
+      sessioneDomande = creaSessione(base, numeroFinale, lingua);
+      sessioneIndice = 0;
+      sessioneAttiva = true;
+
+      mostraDomandaCorrente();
+    }
+
+    function controllaRisposta() {
+      if (!sessioneAttiva || !sessioneDomande.length) {
+        document.getElementById("risultato").textContent = "Prima avvia una sessione.";
+        return;
+      }
+
+      const item = sessioneDomande[sessioneIndice];
+      const rispostaOriginale = document.getElementById("risposta").value;
+      const rispostaNorm = normalizzaTesto(rispostaOriginale);
+
+      item.rispostaUtente = rispostaOriginale;
+      item.corretta = item.risposteAccettate.some(r => normalizzaTesto(r) === rispostaNorm);
+      item.controllata = true;
+
+      document.getElementById("pronuncia").textContent = "Pronuncia: " + item.pronuncia;
+      document.getElementById("risultato").textContent = item.corretta ? "✅ Corretto!" : "❌ Sbagliato!";
+      document.getElementById("rispostaCorretta").textContent = item.correttaMostrata;
+      document.getElementById("pronunciaCorretta").textContent = item.pronuncia;
+      document.getElementById("answerBox").style.display = "block";
+
+      aggiornaStatistiche();
+      aggiornaPulsanti();
+
+      const date = sessioneDomande.filter(x => x.controllata).length;
+      if (date > 0 && date % 40 === 0) {
+        mostraPubblicitaDemo();
+      }
+    }
+
+    function azionePrincipale() {
+      if (!sessioneAttiva || !sessioneDomande.length) {
+        document.getElementById("risultato").textContent = "Prima avvia una sessione.";
+        return;
+      }
+
+      const item = sessioneDomande[sessioneIndice];
+
+      if (!item.controllata) {
+        controllaRisposta();
+      } else {
+        domandaSuccessiva();
+      }
+    }
+
+    function domandaPrecedente() {
+      if (!sessioneAttiva || sessioneIndice === 0) return;
+      salvaRispostaTemporanea();
+      sessioneIndice--;
+      mostraDomandaCorrente();
+    }
+
+    function domandaSuccessiva() {
+      if (!sessioneAttiva || sessioneIndice >= sessioneDomande.length - 1) return;
+      salvaRispostaTemporanea();
+      sessioneIndice++;
+      mostraDomandaCorrente();
+    }
+
+    function ascoltaPronuncia() {
+      if (!sessioneAttiva || !sessioneDomande.length) return;
+      const item = sessioneDomande[sessioneIndice];
+      const utterance = new SpeechSynthesisUtterance(item.correttaMostrata);
+      utterance.lang = item.lingua;
+      speechSynthesis.speak(utterance);
+    }
+
+    function fineSessione() {
+      if (!sessioneDomande.length) return;
+
+      salvaRispostaTemporanea();
+      sessioneAttiva = false;
+
+      const corrette = sessioneDomande.filter(x => x.corretta === true).length;
+      const sbagliate = sessioneDomande.filter(x => x.corretta === false).length;
+      const totale = sessioneDomande.length;
+      const percentuale = totale ? Math.round((corrette / totale) * 100) : 0;
+
+      document.getElementById("mainCard").classList.add("hidden");
+      document.getElementById("summaryBox").classList.remove("hidden");
+
+      document.getElementById("finalCorrette").textContent = corrette;
+      document.getElementById("finalSbagliate").textContent = sbagliate;
+      document.getElementById("finalTotale").textContent = totale;
+      document.getElementById("finalPercentuale").textContent = percentuale + "%";
+
+      const list = document.getElementById("summaryList");
+      list.innerHTML = "";
+
+      sessioneDomande.forEach((item, index) => {
+        const div = document.createElement("div");
+        let cls = "summary-item";
+        if (item.corretta === true) cls += " correct";
+        if (item.corretta === false) cls += " wrong";
+
+        let esito = "Non controllata";
+        if (item.corretta === true) esito = "Corretta";
+        if (item.corretta === false) esito = "Sbagliata";
+
+        div.className = cls;
+        div.innerHTML = `
+          <div class="summary-title">Domanda ${index + 1}: ${item.domanda}</div>
+          <div><strong>Tua risposta:</strong> ${item.rispostaUtente || "(vuota)"}</div>
+          <div><strong>Risposta corretta:</strong> ${item.correttaMostrata}</div>
+          <div><strong>Pronuncia:</strong> ${item.pronuncia}</div>
+          <div><strong>Esito:</strong> ${esito}</div>
+        `;
+        list.appendChild(div);
+      });
+
+      aggiornaStatistiche();
+      aggiornaPulsanti();
+    }
+
+    function ripetiTutte() {
+      if (!sessioneDomande.length) return;
+
+      sessioneDomande = sessioneDomande.map(item => ({
+        domanda: item.domanda,
+        risposteAccettate: [...item.risposteAccettate],
+        pronuncia: item.pronuncia,
+        lingua: item.lingua,
+        rispostaUtente: "",
+        corretta: null,
+        correttaMostrata: item.correttaMostrata,
+        controllata: false
+      }));
+
+      sessioneIndice = 0;
+      sessioneAttiva = true;
+      mostraDomandaCorrente();
+    }
+
+    function ripetiErrate() {
+      const errate = sessioneDomande.filter(item => item.corretta === false);
+      if (!errate.length) {
+        alert("Non ci sono domande errate da ripetere.");
+        return;
+      }
+
+      sessioneDomande = errate.map(item => ({
+        domanda: item.domanda,
+        risposteAccettate: [...item.risposteAccettate],
+        pronuncia: item.pronuncia,
+        lingua: item.lingua,
+        rispostaUtente: "",
+        corretta: null,
+        correttaMostrata: item.correttaMostrata,
+        controllata: false
+      }));
+
+      sessioneIndice = 0;
+      sessioneAttiva = true;
+      mostraDomandaCorrente();
+    }
+
+    function tornaAllInizio() {
+      sessioneDomande = [];
+      sessioneIndice = 0;
+      sessioneAttiva = false;
+
+      document.getElementById("summaryBox").classList.add("hidden");
+      document.getElementById("mainCard").classList.remove("hidden");
+
+      document.getElementById("domanda").textContent = 'Premi "Inizia sessione"';
+      document.getElementById("pronuncia").textContent = "Pronuncia: nascosta fino alla correzione";
+      document.getElementById("risultato").textContent = "";
+      document.getElementById("risposta").value = "";
+      document.getElementById("answerBox").style.display = "none";
+
+      aggiornaStatistiche();
+      aggiornaPulsanti();
+    }
+
+    function mostraPubblicitaDemo() {
+      document.getElementById("adPopup").style.display = "flex";
+    }
+
+    function chiudiPubblicita() {
+      document.getElementById("adPopup").style.display = "none";
+    }
+
+    document.getElementById("risposta").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        azionePrincipale();
+      }
+    });
+
+    aggiornaStatistiche();
+    aggiornaPulsanti();
+  </script>
 </body>
 </html>
