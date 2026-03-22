@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Impara lingue gratis | Quiz interattivi</title>
-  <meta name="description" content="Impara inglese, francese e spagnolo con quiz interattivi, pronuncia audio, livelli e riepilogo finale.">
+  <meta name="description" content="Impara inglese, francese e spagnolo con quiz interattivi, categorie scolastiche, pronuncia audio, livelli e riepilogo finale.">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: Arial, sans-serif;
@@ -20,7 +18,7 @@
     }
 
     .app {
-      max-width: 1180px;
+      max-width: 1220px;
       margin: 0 auto;
     }
 
@@ -47,7 +45,7 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: 340px 1fr;
       gap: 14px;
       align-items: start;
     }
@@ -73,9 +71,7 @@
       font-size: 22px;
     }
 
-    .field {
-      margin-bottom: 12px;
-    }
+    .field { margin-bottom: 12px; }
 
     .field label {
       display: block;
@@ -85,9 +81,7 @@
       color: #374151;
     }
 
-    select,
-    input,
-    button {
+    select, input, button {
       width: 100%;
       padding: 12px;
       border-radius: 12px;
@@ -101,50 +95,20 @@
       transition: 0.2s ease;
     }
 
-    button.primary {
-      background: #2563eb;
-      color: white;
-    }
+    button.primary { background: #2563eb; color: white; }
+    button.primary:hover { background: #1d4ed8; }
 
-    button.primary:hover {
-      background: #1d4ed8;
-    }
+    button.secondary { background: #e5e7eb; color: #111827; }
+    button.secondary:hover { background: #d1d5db; }
 
-    button.secondary {
-      background: #e5e7eb;
-      color: #111827;
-    }
+    button.success { background: #16a34a; color: white; }
+    button.success:hover { background: #15803d; }
 
-    button.secondary:hover {
-      background: #d1d5db;
-    }
+    button.warning { background: #ea580c; color: white; }
+    button.warning:hover { background: #c2410c; }
 
-    button.success {
-      background: #16a34a;
-      color: white;
-    }
-
-    button.success:hover {
-      background: #15803d;
-    }
-
-    button.warning {
-      background: #ea580c;
-      color: white;
-    }
-
-    button.warning:hover {
-      background: #c2410c;
-    }
-
-    button.danger {
-      background: #dc2626;
-      color: white;
-    }
-
-    button.danger:hover {
-      background: #b91c1c;
-    }
+    button.danger { background: #dc2626; color: white; }
+    button.danger:hover { background: #b91c1c; }
 
     button.disabled {
       opacity: 0.5;
@@ -177,9 +141,7 @@
       font-weight: bold;
     }
 
-    .progress-wrap {
-      margin-top: 14px;
-    }
+    .progress-wrap { margin-top: 14px; }
 
     .progress-label {
       font-size: 13px;
@@ -296,9 +258,7 @@
       margin-top: 8px;
     }
 
-    .summary-card {
-      padding: 18px;
-    }
+    .summary-card { padding: 18px; }
 
     .summary-card.hidden,
     .main-card.hidden {
@@ -307,7 +267,7 @@
 
     .summary-top {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 10px;
       margin-bottom: 18px;
     }
@@ -328,13 +288,8 @@
       line-height: 1.6;
     }
 
-    .summary-item.correct {
-      border-left: 6px solid #16a34a;
-    }
-
-    .summary-item.wrong {
-      border-left: 6px solid #dc2626;
-    }
+    .summary-item.correct { border-left: 6px solid #16a34a; }
+    .summary-item.wrong { border-left: 6px solid #dc2626; }
 
     .summary-title {
       font-weight: bold;
@@ -346,6 +301,41 @@
       grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
       margin-bottom: 18px;
+    }
+
+    .quiz-options {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .quiz-option {
+      background: #f3f4f6;
+      color: #111827;
+      border: 1px solid #d1d5db;
+      font-weight: bold;
+      min-height: 58px;
+    }
+
+    .quiz-option:hover { background: #e5e7eb; }
+
+    .quiz-option.selected {
+      background: #dbeafe;
+      border: 2px solid #2563eb;
+      color: #1d4ed8;
+    }
+
+    .quiz-option.correct {
+      background: #dcfce7;
+      border: 2px solid #16a34a;
+      color: #166534;
+    }
+
+    .quiz-option.wrong {
+      background: #fee2e2;
+      border: 2px solid #dc2626;
+      color: #991b1b;
     }
 
     .ad-popup {
@@ -369,18 +359,9 @@
     }
 
     @media (max-width: 980px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .panel {
-        position: static;
-      }
-
-      .main-card {
-        min-height: auto;
-      }
-
+      .layout { grid-template-columns: 1fr; }
+      .panel { position: static; }
+      .main-card { min-height: auto; }
       .question {
         font-size: 28px;
         min-height: 80px;
@@ -388,28 +369,19 @@
     }
 
     @media (max-width: 700px) {
-      body {
-        padding: 10px;
-      }
-
-      .title {
-        font-size: 26px;
-      }
-
-      .question {
-        font-size: 24px;
-      }
+      body { padding: 10px; }
+      .title { font-size: 26px; }
+      .question { font-size: 24px; }
 
       .action-row,
       .nav-row,
       .summary-top,
-      .summary-actions {
+      .summary-actions,
+      .quiz-options {
         grid-template-columns: 1fr;
       }
 
-      .stats-grid {
-        grid-template-columns: 1fr 1fr;
-      }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -417,7 +389,7 @@
   <div class="app">
     <div class="header">
       <h1 class="title">Impara le Lingue</h1>
-      <p class="subtitle">Quiz più naturale: controlli la risposta e poi avanzi con lo stesso pulsante.</p>
+      <p class="subtitle">Versione ottimizzata: Inglese unificato, categorie scolastiche, cronometro e quiz progressivi.</p>
     </div>
 
     <div class="layout">
@@ -427,10 +399,21 @@
         <div class="field">
           <label for="lingua">Lingua</label>
           <select id="lingua">
-            <option value="en-GB">Inglese UK</option>
-            <option value="en-US">Inglese US</option>
+            <option value="en">Inglese</option>
             <option value="fr-FR">Francese</option>
             <option value="es-ES">Spagnolo</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="categoria">Categoria</label>
+          <select id="categoria">
+            <option value="uso-comune">Parole di uso comune</option>
+            <option value="storia">Storia</option>
+            <option value="geografia">Geografia</option>
+            <option value="arte">Arte</option>
+            <option value="scienze">Scienze</option>
+            <option value="fisica">Fisica</option>
           </select>
         </div>
 
@@ -445,7 +428,12 @@
 
         <div class="field">
           <label for="numeroDomande">Numero domande</label>
-          <input type="number" id="numeroDomande" min="1" max="50" value="10">
+          <select id="numeroDomande">
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="70">70</option>
+            <option value="100">100</option>
+          </select>
         </div>
 
         <button class="primary" onclick="iniziaSessione()">Inizia sessione</button>
@@ -477,6 +465,13 @@
           </div>
         </div>
 
+        <div class="stats-grid">
+          <div class="stat-box" style="grid-column: 1 / -1;">
+            <div class="stat-label">Cronometro</div>
+            <div class="stat-value" id="timerDisplay">00:00</div>
+          </div>
+        </div>
+
         <div class="progress-wrap">
           <div class="progress-label">Avanzamento sessione</div>
           <div class="progress-bar">
@@ -489,7 +484,7 @@
         <section class="main-card" id="mainCard">
           <div class="question-top">
             <div class="badge" id="sessionInfo">Nessuna sessione attiva</div>
-            <div class="badge">Pronuncia nascosta fino alla correzione</div>
+            <div class="badge" id="modeBadge">Modalità non attiva</div>
           </div>
 
           <div class="question-card">
@@ -497,7 +492,11 @@
             <div class="pronunciation" id="pronuncia">Pronuncia: nascosta fino alla correzione</div>
           </div>
 
-          <input type="text" id="risposta" placeholder="Scrivi qui la risposta">
+          <input type="text" id="risposta" placeholder="Scrivi qui la risposta" style="display:none
+      
+      ">
+
+          <div class="quiz-options" id="quizOptions"></div>
 
           <div class="result" id="risultato"></div>
 
@@ -517,7 +516,7 @@
           </div>
 
           <div class="helper-text">
-            Dopo la correzione, lo stesso pulsante centrale ti porta avanti. Se torni indietro, mantiene lo stato della domanda.
+            Livello 1: risposta multipla. Livelli 2 e 3: risposta scritta. L’inglese è unificato e accetta varianti utili UK/US.
           </div>
         </section>
 
@@ -547,6 +546,10 @@
               <div class="stat-label">Percentuale</div>
               <div class="stat-value" id="finalPercentuale">0%</div>
             </div>
+            <div class="stat-box">
+              <div class="stat-label">Tempo</div>
+              <div class="stat-value" id="finalTempo">00:00</div>
+            </div>
           </div>
 
           <div class="summary-list" id="summaryList"></div>
@@ -560,116 +563,424 @@
       <h2>Pubblicità demo</h2>
       <p>Qui in futuro potremo inserire una pubblicità reale.</p>
       <p>Per ora è solo una simulazione del popup ogni 40 risposte.</p>
-      <button class="primary" id="skipBtn" onclick="chiudiPubblicita()">Chiudi pubblicità</button>
-      <div id="skipInfo" style="margin-top:10px;color:#6b7280;">Puoi chiuderla quando vuoi.</div>
+      <button class="primary" onclick="chiudiPubblicita()">Chiudi pubblicità</button>
     </div>
   </div>
 
   <script>
-    const domande = {
-      "en-GB": {
-        1: [
-          { domanda: "Traduci 'via cittadina' in inglese", risposteAccettate: ["street"], pronuncia: "stri:t" },
-          { domanda: "Traduci 'carreggiata / strada percorribile' in inglese", risposteAccettate: ["road"], pronuncia: "roud" },
-          { domanda: "Traduci 'cane' in inglese", risposteAccettate: ["dog"], pronuncia: "dog" },
-          { domanda: "Traduci 'gatto' in inglese", risposteAccettate: ["cat"], pronuncia: "cat" },
-          { domanda: "Traduci 'casa' in inglese", risposteAccettate: ["house"], pronuncia: "haus" },
-          { domanda: "Traduci 'pane' in inglese", risposteAccettate: ["bread"], pronuncia: "bred" },
-          { domanda: "Traduci 'sole' in inglese", risposteAccettate: ["sun"], pronuncia: "san" },
-          { domanda: "Traduci 'luna' in inglese", risposteAccettate: ["moon"], pronuncia: "muun" },
-          { domanda: "Traduci 'libro' in inglese", risposteAccettate: ["book"], pronuncia: "buk" },
-          { domanda: "Traduci 'sedia' in inglese", risposteAccettate: ["chair"], pronuncia: "chea" }
-        ],
-        2: [
-          { domanda: "Traduci 'Sto mangiando'", risposteAccettate: ["i am eating", "i'm eating"], pronuncia: "ai am ii-ting" },
-          { domanda: "Traduci 'Lei sta leggendo un libro'", risposteAccettate: ["she is reading a book", "she's reading a book"], pronuncia: "scii iz rii-ding a buk" },
-          { domanda: "Traduci 'Noi stiamo aspettando'", risposteAccettate: ["we are waiting", "we're waiting"], pronuncia: "ui a ueiting" },
-          { domanda: "Traduci 'Sto andando a casa'", risposteAccettate: ["i am going home", "i'm going home"], pronuncia: "ai am gouing houm" },
-          { domanda: "Traduci 'Loro stanno parlando'", risposteAccettate: ["they are talking", "they're talking"], pronuncia: "dhei a to-king" },
-          { domanda: "Traduci 'Io bevo acqua ogni mattina'", risposteAccettate: ["i drink water every morning"], pronuncia: "ai drink uo-ta evri mo-ning" }
-        ],
-        3: [
-          { domanda: "Traduci 'Avrei potuto aiutarti'", risposteAccettate: ["i could have helped you", "i could've helped you"], pronuncia: "ai cud av helpt iu" },
-          { domanda: "Traduci 'Se lo avessi saputo, sarei venuto'", risposteAccettate: ["if i had known, i would have come", "if i'd known, i would've come"], pronuncia: "if ai ad noun, ai wud av kam" },
-          { domanda: "Traduci 'Non sarei uscito con questa pioggia'", risposteAccettate: ["i would not have gone out in this rain", "i wouldn't have gone out in this rain"], pronuncia: "ai wud not av gon aut in dhis rein" },
-          { domanda: "Traduci 'Avrebbero dovuto aspettare di più'", risposteAccettate: ["they should have waited longer", "they should've waited longer"], pronuncia: "dhei sciud av ueited long-ga" }
-        ]
-      },
+    const COMMON_L1 = [
+      ["cane","dog","dog","chien","perro","dog","dog","shièn","perro"],
+      ["gatto","cat","cat","chat","gato","cat","cat","sha","gato"],
+      ["casa","house","house","maison","casa","haus","haus","mezon","casa"],
+      ["pane","bread","bread","pain","pan","bred","bred","pen","pan"],
+      ["acqua","water","water","eau","agua","uo-ta","uoder","o","agua"],
+      ["sole","sun","sun","soleil","sol","san","san","solei","sol"],
+      ["luna","moon","moon","lune","luna","muun","muun","lun","luna"],
+      ["libro","book","book","livre","libro","buk","buk","livr","libro"],
+      ["sedia","chair","chair","chaise","silla","chea","cher","shez","siya"],
+      ["tavolo","table","table","table","mesa","tei-bl","tei-bl","tabl","mesa"],
+      ["porta","door","door","porte","puerta","dor","dor","port","puerta"],
+      ["finestra","window","window","fenêtre","ventana","uin-dou","uin-dou","fenetr","bentana"],
+      ["madre","mother","mother","mère","madre","ma-dha","ma-dher","mer","madre"],
+      ["padre","father","father","père","padre","fa-dha","fa-dher","per","padre"],
+      ["fratello","brother","brother","frère","hermano","bra-dha","bra-dher","frer","ermano"],
+      ["sorella","sister","sister","soeur","hermana","si-sta","si-ster","ser","ermana"],
+      ["via cittadina","street","street","rue","calle","stri:t","striit","rü","caie"],
+      ["carreggiata / strada percorribile","road","road","route","carretera","roud","roud","rut","carretera"],
+      ["scuola","school","school","école","escuela","skuul","skuul","ekol","escuela"],
+      ["penna","pen","pen","stylo","bolígrafo","pen","pen","stilò","boligrafo"],
+      ["matita","pencil","pencil","crayon","lápiz","pen-sil","pen-sil","crèion","lapiz"],
+      ["quaderno","notebook","notebook","cahier","cuaderno","nout-buk","nout-buk","caie","cuaderno"],
+      ["zaino","backpack","backpack","sac à dos","mochila","bak-pak","bak-pak","sak a dò","mochila"],
+      ["giardino","garden","garden","jardin","jardín","gaa-dn","gar-dn","giardèn","jardin"],
+      ["albero","tree","tree","arbre","árbol","trii","trii","arbr","arbol"],
+      ["fiore","flower","flower","fleur","flor","flaua","flauer","flör","flor"],
+      ["strada","street","street","rue","calle","stri:t","striit","rü","caie"],
+      ["amico","friend","friend","ami","amigo","frend","frend","ami","amigo"],
+      ["amica","friend","friend","amie","amiga","frend","frend","ami","amiga"],
+      ["latte","milk","milk","lait","leche","milk","milk","lè","leche"],
+      ["mela","apple","apple","pomme","manzana","apol","apol","pom","manzana"],
+      ["banana","banana","banana","banane","banana","banana","banana","banan","banana"],
+      ["scarpa","shoe","shoe","chaussure","zapato","sciu","shuu","sossür","sapato"],
+      ["camicia","shirt","shirt","chemise","camisa","sci:t","shert","shemiz","camisa"],
+      ["pantaloni","trousers","pants","pantalon","pantalones","trau-zaz","pants","pantalon","pantalones"],
+      ["letto","bed","bed","lit","cama","bed","bed","li","cama"],
+      ["cuscino","pillow","pillow","oreiller","almohada","pilou","pilou","oreié","almohada"],
+      ["orologio","clock","clock","horloge","reloj","klok","klak","orlog","reloj"],
+      ["giorno","day","day","jour","día","dei","dei","giur","dia"],
+      ["notte","night","night","nuit","noche","nait","nait","nüi","noche"],
+      ["estate","summer","summer","été","verano","sama","samer","eté","berano"],
+      ["inverno","winter","winter","hiver","invierno","uin-ta","win-ter","iver","inbierno"]
+    ];
 
-      "en-US": {
-        1: [
-          { domanda: "Traduci 'via cittadina' in inglese americano", risposteAccettate: ["street"], pronuncia: "striit" },
-          { domanda: "Traduci 'carreggiata / strada percorribile' in inglese americano", risposteAccettate: ["road"], pronuncia: "roud" },
-          { domanda: "Traduci 'macchina' in inglese americano", risposteAccettate: ["car"], pronuncia: "car" },
-          { domanda: "Traduci 'acqua' in inglese americano", risposteAccettate: ["water"], pronuncia: "uoder" },
-          { domanda: "Traduci 'scuola' in inglese americano", risposteAccettate: ["school"], pronuncia: "skuul" },
-          { domanda: "Traduci 'telefono' in inglese americano", risposteAccettate: ["phone"], pronuncia: "foun" },
-          { domanda: "Traduci 'mare' in inglese americano", risposteAccettate: ["sea"], pronuncia: "sii" },
-          { domanda: "Traduci 'albero' in inglese americano", risposteAccettate: ["tree"], pronuncia: "trii" }
-        ],
-        2: [
-          { domanda: "Traduci 'Sto lavorando adesso'", risposteAccettate: ["i am working now", "i'm working now"], pronuncia: "ai am uorking nau" },
-          { domanda: "Traduci 'Noi stiamo aspettando'", risposteAccettate: ["we are waiting", "we're waiting"], pronuncia: "ui ar ueiting" },
-          { domanda: "Traduci 'Lei sta cucinando'", risposteAccettate: ["she is cooking", "she's cooking"], pronuncia: "scii iz ku-king" },
-          { domanda: "Traduci 'Loro stanno arrivando'", risposteAccettate: ["they are coming", "they're coming"], pronuncia: "dhei ar caming" },
-          { domanda: "Traduci 'Io sto cercando le chiavi'", risposteAccettate: ["i am looking for the keys", "i'm looking for the keys"], pronuncia: "ai am lu-king for dha kiiz" }
-        ],
-        3: [
-          { domanda: "Traduci 'Avrei dovuto chiamarti ieri'", risposteAccettate: ["i should have called you yesterday", "i should've called you yesterday"], pronuncia: "ai sciud av colld iu yesterdei" },
-          { domanda: "Traduci 'Non sarei andato senza di te'", risposteAccettate: ["i would not have gone without you", "i wouldn't have gone without you"], pronuncia: "ai wud not av gon uithaut iu" },
-          { domanda: "Traduci 'Avrebbero potuto farlo meglio'", risposteAccettate: ["they could have done it better", "they could've done it better"], pronuncia: "dhei cud av dan it bedder" },
-          { domanda: "Traduci 'Se fossi stato lì, avrei parlato'", risposteAccettate: ["if i had been there, i would have spoken", "if i'd been there, i'd have spoken"], pronuncia: "if ai ad bin dher, ai wud av spouken" }
-        ]
-      },
+    const COMMON_L2 = [
+      ["Sto mangiando",["i am eating","i'm eating"],["i am eating","i'm eating"],"je mange","estoy comiendo","ai am ii-ting","ai am ii-ting","ge manj","estoi comiendo"],
+      ["Sto andando a casa",["i am going home","i'm going home"],["i am going home","i'm going home"],"je rentre à la maison","estoy yendo a casa","ai am gouing houm","ai am gouing houm","ge rantr a la mezon","estoi iendo a casa"],
+      ["Noi stiamo aspettando",["we are waiting","we're waiting"],["we are waiting","we're waiting"],"nous attendons","estamos esperando","ui a ueiting","ui ar ueiting","nu zatandon","estamos esperando"],
+      ["Lei sta leggendo un libro",["she is reading a book","she's reading a book"],["she is reading a book","she's reading a book"],"elle lit un livre","ella está leyendo un libro","scii iz rii-ding a buk","shii iz rii-ding a buk","el li an livr","eia esta leyendo un libro"],
+      ["Io bevo acqua ogni mattina","i drink water every morning","i drink water every morning","je bois de l'eau chaque matin","bebo agua cada mañana","ai drink uo-ta evri mo-ning","ai drink uoder evri morning","ge bua de lo shak matan","bebo agua cada maniana"],
+      ["Loro stanno parlando",["they are talking","they're talking"],["they are talking","they're talking"],"ils parlent","ellos están hablando","dhei a to-king","dheir tal-king","il parl","eios estan hablando"],
+      ["Lui vive a Londra","he lives in london","he lives in london","il vit à londres","él vive en londres","hi livz in london","hii livz in landon","il vi a londr","el bibe en londres"],
+      ["Io studio inglese","i study english","i study english","j'étudie l'anglais","estudio inglés","ai stadi ingglish","ai stadi inglish","getudi langlè","estudio ingles"],
+      ["Noi mangiamo insieme","we eat together","we eat together","nous mangeons ensemble","comemos juntos","ui iit tugheda","ui iit tugheder","nu mangeon ensemble","comemos juntos"],
+      ["Lei lavora in città","she works in the city","she works in the city","elle travaille en ville","ella trabaja en la ciudad","scii uorks in dha siti","shii werks in the cidi","el travai an vil","eia trabaja en la ziudad"],
+      ["Io apro la finestra","i open the window","i open the window","j'ouvre la fenêtre","abro la ventana","ai oupn dha uindou","ai oupen the window","giuvr la fenetr","abro la bentana"],
+      ["Lui chiude la porta","he closes the door","he closes the door","il ferme la porte","él cierra la puerta","hi clou-ziz dha dor","hii clouzez the dor","il ferm la port","el zierra la puerta"],
+      ["Stanno giocando fuori",["they are playing outside","they're playing outside"],["they are playing outside","they're playing outside"],"ils jouent dehors","están jugando afuera","dhei a pleiing autsaid","dheir pleiing autsaid","il zhu deor","estan jugando afuera"],
+      ["Io scrivo con la penna","i write with a pen","i write with a pen","j'écris avec un stylo","escribo con un bolígrafo","ai rait uith a pen","ai rait with a pen","gecri avek an stilò","escribo con un boligrafo"],
+      ["La bambina legge bene","the girl reads well","the girl reads well","la fille lit bien","la niña lee bien","dha ghirl riidz uel","the gerl riidz wel","la fii li bien","la ninia lee bien"],
+      ["Il ragazzo corre veloce","the boy runs fast","the boy runs fast","le garçon court vite","el niño corre rápido","dha boi ranz fast","the boi ranz fast","le garson cur vit","el ninio corre rapido"],
+      ["Lui guarda il cielo","he looks at the sky","he looks at the sky","il regarde le ciel","él mira el cielo","hi luks at dha skai","hii luks at the skai","il regard le sièl","el mira el zièlo"],
+      ["La famiglia pranza insieme","the family has lunch together","the family has lunch together","la famille déjeune ensemble","la familia almuerza junta","dha family haz lanch tugheda","the family haz lanch tugheder","la famii dejeune ensemble","la familia almuerza junta"]
+    ];
 
-      "fr-FR": {
-        1: [
-          { domanda: "Traduci 'gatto' in francese", risposteAccettate: ["chat"], pronuncia: "sha" },
-          { domanda: "Traduci 'pane' in francese", risposteAccettate: ["pain"], pronuncia: "pen" },
-          { domanda: "Traduci 'casa' in francese", risposteAccettate: ["maison"], pronuncia: "mezon" },
-          { domanda: "Traduci 'acqua' in francese", risposteAccettate: ["eau"], pronuncia: "o" },
-          { domanda: "Traduci 'libro' in francese", risposteAccettate: ["livre"], pronuncia: "livr" },
-          { domanda: "Traduci 'porta' in francese", risposteAccettate: ["porte"], pronuncia: "port" }
-        ],
-        2: [
-          { domanda: "Traduci 'Io sono pronto'", risposteAccettate: ["je suis prêt"], pronuncia: "ge sui pre" },
-          { domanda: "Traduci 'Noi mangiamo insieme'", risposteAccettate: ["nous mangeons ensemble"], pronuncia: "nu mangeon ensemble" },
-          { domanda: "Traduci 'Lui vive a Parigi'", risposteAccettate: ["il vit à paris"], pronuncia: "il vi a pari" },
-          { domanda: "Traduci 'Lei legge un libro'", risposteAccettate: ["elle lit un livre"], pronuncia: "el li an livr" }
-        ],
-        3: [
-          { domanda: "Traduci 'Se avessi tempo, verrei'", risposteAccettate: ["si j'avais le temps, je viendrais"], pronuncia: "si giavè le tan, ge viandrè" },
-          { domanda: "Traduci 'Avrei voluto parlarne'", risposteAccettate: ["j'aurais voulu en parler"], pronuncia: "giorè voulù an parlè" },
-          { domanda: "Traduci 'Se lo avessi saputo, avrei risposto'", risposteAccettate: ["si je l'avais su, j'aurais répondu"], pronuncia: "si ge lavè sü, giorè repondu" }
-        ]
-      },
+    const COMMON_L3 = [
+      ["Avrei potuto aiutarti",["i could have helped you","i could've helped you"],["i could have helped you","i could've helped you"],"j'aurais pu t'aider","podría haberte ayudado","ai cud av helpt iu","ai cud av helpt iu","giorè pü tèdè","podria aberte aiutado"],
+      ["Se lo avessi saputo, sarei venuto",["if i had known, i would have come","if i'd known, i would've come"],["if i had known, i would have come","if i'd known, i would've come"],"si je l'avais su, je serais venu","si lo hubiera sabido, habría venido","if ai ad noun, ai wud av cam","if ai ad noun, ai wud av cam","si ge lavè sü, ge serè venü","si lo ubiera sabido, avria benido"],
+      ["Non sarei uscito con questa pioggia",["i would not have gone out in this rain","i wouldn't have gone out in this rain"],["i would not have gone out in this rain","i wouldn't have gone out in this rain"],"je ne serais pas sorti avec cette pluie","no habría salido con esta lluvia","ai wud not av gon aut in dhis rein","ai wud not av gon aut in dhis rein","ge ne serè pa sorti avè set plüi","no avria salido con esta yubia"],
+      ["Avrebbero dovuto aspettare di più",["they should have waited longer","they should've waited longer"],["they should have waited longer","they should've waited longer"],"ils auraient dû attendre plus longtemps","deberían haber esperado más","dhei sciud av ueited long-ga","dhei sciud av ueited longer","il zorè dü atandr plü longtan","deberian aber esperado mas"],
+      ["Se avessimo avuto tempo, avremmo viaggiato",["if we had had time, we would have travelled","if we'd had time, we'd have travelled"],["if we had had time, we would have traveled","if we'd had time, we'd have traveled"],"si nous avions eu le temps, nous aurions voyagé","si hubiéramos tenido tiempo, habríamos viajado","if ui ad ad taim, ui wud av tra-vld","if ui ad ad taim, ui wud av traveld","si nu zavion ü le tan, nu zorion voiajé","si ubieramos tenido tiempo, abriamos biayado"],
+      ["Avresti dovuto ascoltarmi",["you should have listened to me","you should've listened to me"],["you should have listened to me","you should've listened to me"],"tu aurais dû m'écouter","deberías haberme escuchado","iu sciud av lisnd tu mi","iu sciud av lisnd tu mi","tu orè dü mekuté","deberias aberme escuchado"],
+      ["Sarei rimasto a casa se fossi stato stanco",["i would have stayed at home if i had been tired","i would've stayed at home if i'd been tired"],["i would have stayed at home if i had been tired","i would've stayed at home if i'd been tired"],"je serais resté à la maison si j'avais été fatigué","me habría quedado en casa si hubiera estado cansado","ai wud av steid at houm if ai ad bin taiad","ai wudav steid at houm if aid bin taierd","ge serè restè a la mezon si giavè eté fatigè","me avria kedado en casa si ubiera estado cansado"],
+      ["Non avrei mai immaginato una cosa simile",["i would never have imagined such a thing","i would've never imagined such a thing"],["i would never have imagined such a thing","i would've never imagined such a thing"],"je n'aurais jamais imaginé une chose pareille","nunca habría imaginado algo así","ai wud neva av imagined sach a thing","ai wud never av imagined sach a thing","ge norè giamè imaginen ün soz parei","nunca avria imaginado algo asi"],
+      ["Avrebbero potuto arrivare prima",["they could have arrived earlier","they could've arrived earlier"],["they could have arrived earlier","they could've arrived earlier"],"ils auraient pu arriver plus tôt","podrían haber llegado antes","dhei cud av araivd erlia","dhei cud av araivd erlier","il zorè pü arivé plü to","podrian aber llegado antes"],
+      ["Se me lo avessi chiesto, ti avrei risposto",["if you had asked me, i would have answered you","if you'd asked me, i'd have answered you"],["if you had asked me, i would have answered you","if you'd asked me, i'd have answered you"],"si tu me l'avais demandé, je t'aurais répondu","si me lo hubieras pedido, te habría respondido","if iu ad askt mi ai wud av ansad iu","if iud askt mi aid av anserd iu","si tu me lavè demandè ge torè repondu","si me lo ubieras pedido te avria respondido"]
+    ];
 
-      "es-ES": {
-        1: [
-          { domanda: "Traduci 'casa' in spagnolo", risposteAccettate: ["casa"], pronuncia: "casa" },
-          { domanda: "Traduci 'libro' in spagnolo", risposteAccettate: ["libro"], pronuncia: "libro" },
-          { domanda: "Traduci 'acqua' in spagnolo", risposteAccettate: ["agua"], pronuncia: "agua" },
-          { domanda: "Traduci 'sole' in spagnolo", risposteAccettate: ["sol"], pronuncia: "sol" },
-          { domanda: "Traduci 'luna' in spagnolo", risposteAccettate: ["luna"], pronuncia: "luna" },
-          { domanda: "Traduci 'strada / via cittadina' in spagnolo", risposteAccettate: ["calle"], pronuncia: "caie" }
-        ],
-        2: [
-          { domanda: "Traduci 'Sto studiando'", risposteAccettate: ["estoy estudiando"], pronuncia: "estoi estudiando" },
-          { domanda: "Traduci 'Loro stanno arrivando'", risposteAccettate: ["ellos están llegando"], pronuncia: "eios estan iegando" },
-          { domanda: "Traduci 'Io vivo a Madrid'", risposteAccettate: ["vivo en madrid"], pronuncia: "bibo en madrid" },
-          { domanda: "Traduci 'Lei legge un libro'", risposteAccettate: ["ella lee un libro"], pronuncia: "eia lee un libro" }
-        ],
-        3: [
-          { domanda: "Traduci 'Avrei voluto visitare Madrid'", risposteAccettate: ["me habría gustado visitar madrid"], pronuncia: "me avria gustado visitar madrid" },
-          { domanda: "Traduci 'Se avessi saputo tutto, avrei risposto'", risposteAccettate: ["si hubiera sabido todo, habría respondido"], pronuncia: "si ubera sabido todo, avria respondido" },
-          { domanda: "Traduci 'Avremmo potuto restare di più'", risposteAccettate: ["habríamos podido quedarnos más tiempo"], pronuncia: "abriamos podido quedarnos mas tiempo" }
-        ]
+    const HISTORY_L1 = [
+      ["re","king","king","roi","rey","king","king","rua","rei"],
+      ["regina","queen","queen","reine","reina","kwiin","kwiin","ren","reina"],
+      ["guerra","war","war","guerre","guerra","uo","uor","gher","guerra"],
+      ["pace","peace","peace","paix","paz","piis","piis","pè","paz"],
+      ["castello","castle","castle","château","castillo","caa-sl","casl","sciatò","castiglio"],
+      ["impero","empire","empire","empire","imperio","em-pai-a","em-pai-er","ampir","imperio"],
+      ["soldato","soldier","soldier","soldat","soldado","soul-gia","soul-ger","solda","soldado"],
+      ["armata","army","army","armée","ejército","aami","armi","armé","ejercito"],
+      ["trono","throne","throne","trône","trono","throun","throun","tron","trono"],
+      ["corona","crown","crown","couronne","corona","craun","craun","curon","corona"],
+      ["papà del re","king's father","king's father","père du roi","padre del rey","kings fa-dha","kings fa-dher","per dü rua","padre del rei"],
+      ["cavaliere","knight","knight","chevalier","caballero","nait","nait","scevalié","cabayero"]
+    ];
+
+    const HISTORY_L2 = [
+      ["antichità","antiquity","antiquity","antiquité","antigüedad","an-ti-kwi-ti","an-ti-kwi-di","antikité","antiguedad"],
+      ["medioevo","middle ages","middle ages","moyen âge","edad media","midl eidgis","midl eidgis","moièn ag","edad media"],
+      ["rivoluzione","revolution","revolution","révolution","revolución","rev-o-lu-scion","rev-o-lu-shen","revolusion","rebolucion"],
+      ["battaglia","battle","battle","bataille","batalla","batl","badl","batai","bataya"],
+      ["civiltà","civilization","civilization","civilisation","civilización","sivilai-zeiscion","sivilai-zeishen","civilisasion","sibilizacion"],
+      ["feudalesimo","feudalism","feudalism","féodalisme","feudalismo","fiu-da-lizm","fiu-da-lizem","feodalism","feudalismo"],
+      ["dinastia","dynasty","dynasty","dynastie","dinastía","dainasti","dainasti","dinasti","dinastia"],
+      ["trattato","treaty","treaty","traité","tratado","trii-ti","trii-di","trèté","tratado"],
+      ["cronologia","chronology","chronology","chronologie","cronología","kronolodgi","kronolodgi","cronologi","cronologia"],
+      ["conquista","conquest","conquest","conquête","conquista","konkuest","kankwest","conket","conquista"]
+    ];
+
+    const HISTORY_L3 = [
+      ["monarchia assoluta","absolute monarchy","absolute monarchy","monarchie absolue","monarquía absoluta","absolut mon-aki","absolut monarki","monarscì absolü","monarkia absoluta"],
+      ["rivoluzione industriale","industrial revolution","industrial revolution","révolution industrielle","revolución industrial","indastrial revolu-scion","indastrial revolu-shen","revolusion andüstrièl","rebolucion industrial"],
+      ["prima guerra mondiale","first world war","first world war","première guerre mondiale","primera guerra mundial","ferst uorld uo","ferst uorld uor","premier gher mondiàl","primera guerra mundial"],
+      ["seconda guerra mondiale","second world war","second world war","deuxième guerre mondiale","segunda guerra mundial","sekond uorld uo","sekond uorld uor","deuzièm gher mondiàl","segunda guerra mundial"],
+      ["caduta dell'impero romano","fall of the roman empire","fall of the roman empire","chute de l'empire romain","caída del imperio romano","fol ov dha rouman em-pai-a","fal ov the roman empair","sciut de lampir romèn","caida del imperio romano"],
+      ["la rivoluzione francese cambiò l'europa","the french revolution changed europe","the french revolution changed europe","la révolution française a changé l'europe","la revolución francesa cambió europa","dha french revolu-scion ceingd iurope","the french revolu-shen cheindjd iurop","la revolusion fransèz a scianjè löròp","la rebolucion francesa cambio europa"],
+      ["l'impero romano si estendeva su molti territori","the roman empire extended over many territories","the roman empire extended over many territories","l'empire romain s'étendait sur de nombreux territoires","el imperio romano se extendía sobre muchos territorios","dha rouman empair exten-did ouva meni teritories","the roman empair extendid over meni territories","lampir romèn setandè sür de nombrö terituar","el imperio romano se extendia sobre muchos territorios"],
+      ["il medioevo seguì la caduta di roma","the middle ages followed the fall of rome","the middle ages followed the fall of rome","le moyen âge a suivi la chute de rome","la edad media siguió a la caída de roma","dha midl eidgis foloüd dha fol ov roum","the midl eidgis faloed the fal ov roum","le moièn ag a süivi la sciut de rom","la edad media siguio a la caida de roma"]
+    ];
+
+    const GEOGRAPHY_L1 = [
+      ["montagna","mountain","mountain","montagne","montaña","maun-tin","maun-tin","montagn","montania"],
+      ["fiume","river","river","rivière","río","ri-va","ri-ver","rivièr","rio"],
+      ["mare","sea","sea","mer","mar","sii","sii","mer","mar"],
+      ["isola","island","island","île","isla","ai-land","ai-land","il","isla"],
+      ["continente","continent","continent","continent","continente","kon-ti-nent","kan-ti-nent","continen","continente"],
+      ["capitale","capital","capital","capitale","capital","capi-tl","ca-pi-dl","kapital","capital"],
+      ["pianura","plain","plain","plaine","llanura","plein","plein","plen","ianura"],
+      ["collina","hill","hill","colline","colina","hil","hil","kolin","colina"],
+      ["lago","lake","lake","lac","lago","leik","leik","lak","lago"],
+      ["oceano","ocean","ocean","océan","océano","ouscian","oushən","osean","oceano"],
+      ["deserto","desert","desert","désert","desierto","dezat","dezert","dezèr","desierto"],
+      ["costa","coast","coast","côte","costa","koust","koust","kot","costa"]
+    ];
+
+    const GEOGRAPHY_L2 = [
+      ["stato","state","state","état","estado","steit","steit","eta","estado"],
+      ["confine","border","border","frontière","frontera","bo-da","bor-der","frontièr","frontera"],
+      ["emisfero","hemisphere","hemisphere","hémisphère","hemisferio","hemi-sfia","hemi-sfir","emisfèr","emisferio"],
+      ["latitudine","latitude","latitude","latitude","latitud","lati-tiud","ladi-tud","latitüd","latitud"],
+      ["longitudine","longitude","longitude","longitude","longitud","longi-tiud","londgi-tud","longitüd","longitud"],
+      ["catena montuosa","mountain range","mountain range","chaîne de montagnes","cordillera","mauntin reinj","mauntin reinj","schen de montagn","cordillera"],
+      ["clima","climate","climate","climat","clima","clai-mat","klai-mət","clima","clima"],
+      ["mappa","map","map","carte","mapa","map","map","kart","mapa"],
+      ["regione","region","region","région","región","ri-gion","ri-gion","rejion","region"],
+      ["popolazione","population","population","population","población","popiu-leiscion","papyuleishen","populasion","poblacion"]
+    ];
+
+    const GEOGRAPHY_L3 = [
+      ["Londra è la capitale del Regno Unito","london is the capital of the united kingdom","london is the capital of the united kingdom","londres est la capitale du royaume-uni","londres es la capital del reino unido","london iz dha capital ov dha united kingdom","landon iz the capidal ov the iunaited kingdom","londr e la kapital dü roiaum üni","londres es la capital del reino unido"],
+      ["Parigi è la capitale della Francia","paris is the capital of france","paris is the capital of france","paris est la capitale de la france","parís es la capital de francia","paris iz dha capital ov frans","peris iz the capidal ov frans","pari e la kapital de la frans","paris es la capital de francia"],
+      ["Madrid è la capitale della Spagna","madrid is the capital of spain","madrid is the capital of spain","madrid est la capitale de l'espagne","madrid es la capital de españa","madrid iz dha capital ov spein","madrid iz the capidal ov spein","madrid e la kapital de lespagn","madrid es la capital de espania"],
+      ["Roma è la capitale dell'Italia","rome is the capital of italy","rome is the capital of italy","rome est la capitale de l'italie","roma es la capital de italia","roum iz dha capital ov itli","roum iz the capidal ov italy","rom e la kapital de litali","roma es la capital de italia"],
+      ["Il Nilo è un fiume africano","the nile is an african river","the nile is an african river","le nil est un fleuve africain","el nilo es un río africano","dha nail iz an afri-can ri-va","the nail iz an africn river","le nil e tan flöv afrikèn","el nilo es un rio africano"],
+      ["L'Everest è la montagna più alta del mondo","everest is the highest mountain in the world","everest is the highest mountain in the world","l'everest est la plus haute montagne du monde","el everest es la montaña más alta del mundo","everest iz dha haiest mauntin in dha uorld","everest iz the haiest mauntin in the world","leverest e la plü ot montagn dü mond","el everest es la montania mas alta del mundo"],
+      ["L'oceano Pacifico è il più grande","the pacific ocean is the largest","the pacific ocean is the largest","l'océan pacifique est le plus grand","el océano pacífico es el más grande","dha pasifik ouscian iz dha largist","the pasifik oshan iz the largist","losean pasifik e le plü gran","el oceano pacifico es el mas grande"],
+      ["L'Africa è un continente","africa is a continent","africa is a continent","l'afrique est un continent","áfrica es un continente","afrika iz a continent","afrika iz a continent","lafrik e tan continen","africa es un continente"]
+    ];
+
+    const ART_L1 = [
+      ["quadro","painting","painting","tableau","cuadro","pein-ting","pein-ting","tablò","cuadro"],
+      ["colore","colour","color","couleur","color","ca-la","ca-ler","culör","color"],
+      ["disegno","drawing","drawing","dessin","dibujo","dro-ing","dra-ing","desen","dibujo"],
+      ["scultura","sculpture","sculpture","sculpture","escultura","scalpcia","skalpcier","sculptür","escultura"],
+      ["museo","museum","museum","musée","museo","miu-ziam","miu-ziam","müzé","museo"],
+      ["pennello","brush","brush","pinceau","pincel","brash","brash","panso","pinsel"],
+      ["matita","pencil","pencil","crayon","lápiz","pen-sil","pen-sil","crèion","lapiz"],
+      ["tela","canvas","canvas","toile","lienzo","canvas","canvas","tual","lienzo"],
+      ["galleria","gallery","gallery","galerie","galería","galeri","galeri","galeri","galeria"],
+      ["opera","work","work","oeuvre","obra","uok","werk","övr","obra"]
+    ];
+
+    const ART_L2 = [
+      ["artista","artist","artist","artiste","artista","aa-tist","ar-tist","artist","artista"],
+      ["ritratto","portrait","portrait","portrait","retrato","por-trit","por-trit","portrè","retrato"],
+      ["paesaggio","landscape","landscape","paysage","paisaje","land-skeip","land-skeip","peisag","paisaje"],
+      ["affresco","fresco","fresco","fresque","fresco","freskou","freskou","fresk","fresco"],
+      ["galleria d'arte","art gallery","art gallery","galerie d'art","galería de arte","aat galeri","art ghaleri","galeri dart","galeria de arte"],
+      ["prospettiva","perspective","perspective","perspective","perspectiva","perspektiv","perspektiv","perspektiv","perspectiva"],
+      ["marmo","marble","marble","marbre","mármol","ma-bol","marbl","marbr","marmol"],
+      ["bronzo","bronze","bronze","bronze","bronce","bronz","bronz","bronz","bronce"],
+      ["stile","style","style","style","estilo","stail","stail","stil","estilo"],
+      ["capolavoro","masterpiece","masterpiece","chef-d'oeuvre","obra maestra","mastapiis","masterpiis","scef dövr","obra maestra"]
+    ];
+
+    const ART_L3 = [
+      ["Leonardo da Vinci era un pittore e inventore","leonardo da vinci was a painter and inventor","leonardo da vinci was a painter and inventor","léonard de vinci était un peintre et inventeur","leonardo da vinci era un pintor e inventor","lionardo da vinci uoz a peinta and inventor","lionardo da vinci waz a peinter and inventor","leonar de vinci etè an pentr e inventör","leonardo da vinci era un pintor e inventor"],
+      ["La prospettiva dà profondità al disegno","perspective gives depth to the drawing","perspective gives depth to the drawing","la perspective donne de la profondeur au dessin","la perspectiva da profundidad al dibujo","perspektiv ghivz depth tu dha droing","perspektiv ghivz depth tu the draing","la perspektiv don de la profonder o desen","la perspectiva da profundidad al dibujo"],
+      ["Un affresco si dipinge sull'intonaco fresco","a fresco is painted on fresh plaster","a fresco is painted on fresh plaster","une fresque se peint sur l'enduit frais","un fresco se pinta sobre yeso fresco","a freskou iz peintid on fresh plasta","a freskou iz peinid on fresh plaster","ün fresk se pen sür landü frè","un fresco se pinta sobre yeso fresco"],
+      ["La scultura può essere in marmo o bronzo","sculpture can be in marble or bronze","sculpture can be in marble or bronze","la sculpture peut être en marbre ou en bronze","la escultura puede ser de mármol o bronce","scalpcia can bi in ma-bol or bronz","skalpcier can bi in marbl or bronz","la sculptür pö etr an marbr u an bronz","la escultura puede ser de marmol o bronze"],
+      ["Un ritratto rappresenta una persona","a portrait represents a person","a portrait represents a person","un portrait représente une personne","un retrato representa a una persona","a portrit repre-zents a pe-son","a portrit reprezents a person","an portrè reprézant ün person","un retrato representa a una persona"],
+      ["Un paesaggio mostra la natura","a landscape shows nature","a landscape shows nature","un paysage montre la nature","un paisaje muestra la naturaleza","a landscape shous neicia","a landscape shous neicher","an peisag montr la natur","un paisaje muestra la naturaleza"],
+      ["Il museo conserva opere importanti","the museum preserves important works","the museum preserves important works","le musée conserve des oeuvres importantes","el museo conserva obras importantes","dha miu-ziam prezervz important uorks","the miu-ziam prizervz important werks","le müzé conserv de övr important","el museo conserva obras importantes"],
+      ["L'artista usa colore e luce","the artist uses color and light","the artist uses color and light","l'artiste utilise la couleur et la lumière","el artista usa color y luz","dha artist iusiz kala and lait","the artist iusiz color and lait","lartist itiliz la culör e la lumier","el artista usa color y luz"]
+    ];
+
+    const SCIENCE_L1 = [
+      ["pianta","plant","plant","plante","planta","plaant","plant","plant","planta"],
+      ["animale","animal","animal","animal","animal","ani-mal","ani-mal","animal","animal"],
+      ["foglia","leaf","leaf","feuille","hoja","liif","liif","föi","hoja"],
+      ["radice","root","root","racine","raíz","ruut","ruut","rasin","raiz"],
+      ["fiore","flower","flower","fleur","flor","flaua","flauer","flör","flor"],
+      ["insetto","insect","insect","insecte","insecto","in-sekt","in-sekt","insect","insecto"],
+      ["seme","seed","seed","graine","semilla","siid","siid","gren","semiya"],
+      ["frutto","fruit","fruit","fruit","fruta","fruut","fruut","früi","fruta"],
+      ["corpo","body","body","corps","cuerpo","bodi","badi","cor","cuerpo"],
+      ["osso","bone","bone","os","hueso","boun","boun","o","uèso"]
+    ];
+
+    const SCIENCE_L2 = [
+      ["cellula","cell","cell","cellule","célula","sel","sel","selül","celula"],
+      ["scheletro","skeleton","skeleton","squelette","esqueleto","skeliton","skeliton","squelet","esqueleto"],
+      ["respirazione","respiration","respiration","respiration","respiración","respirai-scion","respirai-shen","respirasion","respiracion"],
+      ["fotosintesi","photosynthesis","photosynthesis","photosynthèse","fotosíntesis","foutou-sinthisis","foutou-sinthisis","fotosentès","fotosintesis"],
+      ["mammifero","mammal","mammal","mammifère","mamífero","mamel","mamel","mamifèr","mamifero"],
+      ["vertebrato","vertebrate","vertebrate","vertébré","vertebrado","ve-te-brit","ver-tə-breit","vertebré","vertebrado"],
+      ["muscolo","muscle","muscle","muscle","músculo","masl","masl","müskl","musculo"],
+      ["organo","organ","organ","organe","órgano","o-gan","or-gan","organ","organo"],
+      ["ecosistema","ecosystem","ecosystem","écosystème","ecosistema","ii-kou-sistem","ekousistem","ecosistem","ecosistema"],
+      ["habitat","habitat","habitat","habitat","hábitat","habitat","habitat","abita","habitat"]
+    ];
+
+    const SCIENCE_L3 = [
+      ["La cellula è l'unità fondamentale della vita","the cell is the basic unit of life","the cell is the basic unit of life","la cellule est l'unité fondamentale de la vie","la célula es la unidad fundamental de la vida","dha sel iz dha beisik iunit ov laif","the sel iz the beisik iunit ov laif","la selül e lunité fondamantal de la vi","la celula es la unidad fundamental de la vida"],
+      ["Le piante producono ossigeno con la fotosintesi","plants produce oxygen through photosynthesis","plants produce oxygen through photosynthesis","les plantes produisent de l'oxygène grâce à la photosynthèse","las plantas producen oxígeno con la fotosíntesis","plants produus oksigen thru fotousinthisis","plants prodius axigen thru fotosinthisis","le plant produiz de loxigèn gras a la fotosentès","las plantas producen oxigeno con la fotosintesis"],
+      ["I mammiferi allattano i piccoli","mammals feed their young with milk","mammals feed their young with milk","les mammifères allaitent leurs petits","los mamíferos alimentan a sus crías con leche","mamels fiid dhea yang uith milk","mamels fid dher yang with milk","le mamifèr alèt leur peti","los mamiferos alimentan a sus crias con leche"],
+      ["Lo scheletro sostiene il corpo","the skeleton supports the body","the skeleton supports the body","le squelette soutient le corps","el esqueleto sostiene el cuerpo","dha skeliton seports dha body","the skeliton supports the body","le squelet sutien le cor","el esqueleto sostiene el cuerpo"],
+      ["L'ecosistema dipende dall'equilibrio tra viventi e ambiente","the ecosystem depends on the balance between living things and the environment","the ecosystem depends on the balance between living things and the environment","l'écosystème dépend de l'équilibre entre les êtres vivants et l'environnement","el ecosistema depende del equilibrio entre los seres vivos y el ambiente","dhi ikousistem dipends on dha balens bituin living things and dhi envaironment","the ekousistem dipends on the balens bitwin living things and the envaironment","lekosistem depand de lequilibr antre le zetr vivan e lanvironman","el ecosistema depende del equilibrio entre los seres vivos y el ambiente"],
+      ["La respirazione fornisce energia al corpo","respiration provides energy to the body","respiration provides energy to the body","la respiration fournit de l'énergie au corps","la respiración proporciona energía al cuerpo","respiraiscion provaidz enedgi tu dha body","respiraishen provaidz enerdgi tu the body","la respirasion furni de lenergi o cor","la respiracion proporciona energia al cuerpo"],
+      ["Le radici assorbono acqua e sali minerali","roots absorb water and mineral salts","roots absorb water and mineral salts","les racines absorbent l'eau et les sels minéraux","las raíces absorben agua y sales minerales","ruuts absorb uota and mineral solts","ruuts absarb water and mineral salts","le rasin absorb lo e le sel minerò","las raices absorben agua y sales minerales"],
+      ["Gli animali si adattano all'habitat","animals adapt to their habitat","animals adapt to their habitat","les animaux s'adaptent à leur habitat","los animales se adaptan a su hábitat","animals adapt tu dhea habitat","animals adapt tu dher habitat","le zano sadapt a leur habitat","los animales se adaptan a su habitat"]
+    ];
+
+    const PHYSICS_L1 = [
+      ["forza","force","force","force","fuerza","fo:s","fors","fors","fuerza"],
+      ["energia","energy","energy","énergie","energía","enedgi","enerdgi","energi","energia"],
+      ["luce","light","light","lumière","luz","lait","lait","lumier","luz"],
+      ["suono","sound","sound","son","sonido","saund","saund","son","sonido"],
+      ["calore","heat","heat","chaleur","calor","hiit","hiit","scalör","calor"],
+      ["massa","mass","mass","masse","masa","mas","mas","mas","masa"],
+      ["peso","weight","weight","poids","peso","ueit","weit","pua","peso"],
+      ["tempo","time","time","temps","tiempo","taim","taim","tan","tiempo"],
+      ["spazio","space","space","espace","espacio","speis","speis","espas","espacio"],
+      ["moto","motion","motion","mouvement","movimiento","mouscion","moushen","muvman","movimiento"]
+    ];
+
+    const PHYSICS_L2 = [
+      ["velocità","speed","speed","vitesse","velocidad","spiid","spiid","vitess","velocidad"],
+      ["gravità","gravity","gravity","gravité","gravedad","gravi-ti","gravi-di","gravité","gravedad"],
+      ["temperatura","temperature","temperature","température","temperatura","tem-pri-cia","tempracher","tonperatür","temperatura"],
+      ["elettricità","electricity","electricity","électricité","electricidad","ilektrisiti","ilektrisidi","elektrisité","electricidad"],
+      ["magnete","magnet","magnet","aimant","imán","magnet","magnet","eman","iman"],
+      ["attrito","friction","friction","frottement","fricción","frikscion","frikshen","frotman","friccion"],
+      ["corrente","current","current","courant","corriente","karant","kerent","curan","corriente"],
+      ["circuito","circuit","circuit","circuit","circuito","sa-kit","ser-kit","sir-küi","circuito"],
+      ["pressione","pressure","pressure","pression","presión","presha","presher","presion","presion"],
+      ["volume","volume","volume","volume","volumen","volium","valium","volüm","volumen"]
+    ];
+
+    const PHYSICS_L3 = [
+      ["La gravità attira i corpi verso la Terra","gravity pulls bodies toward the earth","gravity pulls bodies toward the earth","la gravité attire les corps vers la terre","la gravedad atrae los cuerpos hacia la tierra","gravity pulz bodis touod dha erth","gravi-di pulz badis tor-dh the erth","la gravité atir le cor ver la ter","la gravedad atrae los cuerpos hacia la tierra"],
+      ["La luce viaggia più veloce del suono","light travels faster than sound","light travels faster than sound","la lumière voyage plus vite que le son","la luz viaja más rápido que el sonido","lait travels fasta dhan saund","lait travlz faster dhan saund","la lumier voiaj plü vit ke le son","la luz viaja mas rapido que el sonido"],
+      ["L'energia può trasformarsi","energy can change form","energy can change form","l'énergie peut se transformer","la energía puede transformarse","enedgi can ceing form","enerdgi can cheindj form","lenergi pö se transformé","la energia puede transformarse"],
+      ["Il magnete attira alcuni metalli","the magnet attracts some metals","the magnet attracts some metals","l'aimant attire certains métaux","el imán atrae algunos metales","dha magnet atrakts sam metals","the magnet atrakts sam medals","leman atir serten metò","el iman atrae algunos metales"],
+      ["L'attrito rallenta il movimento","friction slows down motion","friction slows down motion","le frottement ralentit le mouvement","la fricción frena el movimiento","frikscion slous daun mouscion","frikshen slouz daun moushen","le frotman ralanti le muvman","la friccion frena el movimiento"],
+      ["La corrente elettrica attraversa il circuito","electric current flows through the circuit","electric current flows through the circuit","le courant électrique traverse le circuit","la corriente eléctrica atraviesa el circuito","ilektrik karant flous thru dha sa-kit","ilektrik kerent flouz thru the serkit","le curan elekrik travers le sirküi","la corriente electrica atraviesa el circuito"],
+      ["La pressione aumenta se la forza cresce","pressure increases if force grows","pressure increases if force grows","la pression augmente si la force augmente","la presión aumenta si la fuerza crece","presha inkriisiz if fos grouz","presher inkrisiz if fors grouz","la presion ogmant si la fors ogmant","la presion aumenta si la fuerza crece"],
+      ["Il volume misura lo spazio occupato","volume measures the occupied space","volume measures the occupied space","le volume mesure l'espace occupé","el volumen mide el espacio ocupado","volium mezhaz dha okiupaid speis","valium mezheres the akyupaid speis","le volüm mezür lespas okupé","el volumen mide el espacio ocupado"]
+    ];
+
+    function buildEntries(rows, level) {
+      return rows.map(r => {
+        const enGB = Array.isArray(r[1]) ? r[1] : [r[1]];
+        const enUS = Array.isArray(r[2]) ? r[2] : [r[2]];
+        const frFR = Array.isArray(r[3]) ? r[3] : [r[3]];
+        const esES = Array.isArray(r[4]) ? r[4] : [r[4]];
+
+        return {
+          prompt: r[0],
+          level,
+          translations: {
+            "en-GB": enGB,
+            "en-US": enUS,
+            "fr-FR": frFR,
+            "es-ES": esES
+          },
+          pronunciations: {
+            "en-GB": r[5],
+            "en-US": r[6],
+            "fr-FR": r[7],
+            "es-ES": r[8]
+          }
+        };
+      });
+    }
+
+    const RAW_DATABASE = {
+      "uso-comune": {
+        1: buildEntries(COMMON_L1, 1),
+        2: buildEntries(COMMON_L2, 2),
+        3: buildEntries(COMMON_L3, 3)
+      },
+      "storia": {
+        1: buildEntries(HISTORY_L1, 1),
+        2: buildEntries(HISTORY_L2, 2),
+        3: buildEntries(HISTORY_L3, 3)
+      },
+      "geografia": {
+        1: buildEntries(GEOGRAPHY_L1, 1),
+        2: buildEntries(GEOGRAPHY_L2, 2),
+        3: buildEntries(GEOGRAPHY_L3, 3)
+      },
+      "arte": {
+        1: buildEntries(ART_L1, 1),
+        2: buildEntries(ART_L2, 2),
+        3: buildEntries(ART_L3, 3)
+      },
+      "scienze": {
+        1: buildEntries(SCIENCE_L1, 1),
+        2: buildEntries(SCIENCE_L2, 2),
+        3: buildEntries(SCIENCE_L3, 3)
+      },
+      "fisica": {
+        1: buildEntries(PHYSICS_L1, 1),
+        2: buildEntries(PHYSICS_L2, 2),
+        3: buildEntries(PHYSICS_L3, 3)
       }
     };
+
+    function uniqueNormalizedStrings(arr) {
+      const out = [];
+      const seen = new Set();
+      for (const item of arr) {
+        const norm = normalizzaTesto(item);
+        if (!seen.has(norm)) {
+          seen.add(norm);
+          out.push(item);
+        }
+      }
+      return out;
+    }
+
+    function getAcceptedAnswers(entry, lingua) {
+      if (lingua === "en") {
+        const enAll = [
+          ...(entry.translations["en-GB"] || []),
+          ...(entry.translations["en-US"] || [])
+        ];
+
+        const expanded = [];
+        for (const ans of enAll) {
+          expanded.push(ans);
+
+          if (normalizzaTesto(ans).includes("colour")) {
+            expanded.push(ans.replace(/colour/gi, "color"));
+          }
+          if (normalizzaTesto(ans).includes("color")) {
+            expanded.push(ans.replace(/color/gi, "colour"));
+          }
+          if (normalizzaTesto(ans).includes("favourite")) {
+            expanded.push(ans.replace(/favourite/gi, "favorite"));
+          }
+          if (normalizzaTesto(ans).includes("favorite")) {
+            expanded.push(ans.replace(/favorite/gi, "favourite"));
+          }
+          if (normalizzaTesto(ans).includes("travelled")) {
+            expanded.push(ans.replace(/travelled/gi, "traveled"));
+          }
+          if (normalizzaTesto(ans).includes("traveled")) {
+            expanded.push(ans.replace(/traveled/gi, "travelled"));
+          }
+        }
+
+        return uniqueNormalizedStrings(expanded);
+      }
+
+      return entry.translations[lingua] || [];
+    }
+
+    function getPronunciation(entry, lingua) {
+      if (lingua === "en") {
+        return entry.pronunciations["en-GB"] || entry.pronunciations["en-US"] || "";
+      }
+      return entry.pronunciations[lingua] || "";
+    }
 
     let sessioneDomande = [];
     let sessioneIndice = 0;
     let sessioneAttiva = false;
+    let rispostaSelezionata = "";
+    let timerSeconds = 0;
+    let timerInterval = null;
+
+    function formatTime(seconds) {
+      const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
+      const secs = String(seconds % 60).padStart(2, "0");
+      return `${mins}:${secs}`;
+    }
+
+    function startTimer() {
+      stopTimer();
+      timerSeconds = 0;
+      document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
 
     function mescolaArray(array) {
       const copia = [...array];
@@ -681,30 +992,57 @@
     }
 
     function normalizzaTesto(testo) {
-      return testo
+      return String(testo)
         .toLowerCase()
         .trim()
         .replace(/\s+/g, " ")
         .replace(/[’]/g, "'");
     }
 
-    function creaRecordDomanda(domandaBase, lingua) {
+    function creaRecordDomanda(entry, lingua, livello, categoria) {
+      const risposte = getAcceptedAnswers(entry, lingua);
+
       return {
-        domanda: domandaBase.domanda,
-        risposteAccettate: [...domandaBase.risposteAccettate],
-        pronuncia: domandaBase.pronuncia,
+        domanda: entry.prompt,
+        risposteAccettate: [...risposte],
+        pronuncia: getPronunciation(entry, lingua),
         lingua,
+        livello,
+        categoria,
         rispostaUtente: "",
         corretta: null,
-        correttaMostrata: domandaBase.risposteAccettate[0],
-        controllata: false
+        correttaMostrata: risposte[0],
+        controllata: false,
+        opzioniQuiz: livello === 1 ? generaOpzioniQuiz(risposte[0], lingua, categoria, livello) : []
       };
     }
 
-    function creaSessione(listaBase, numero, lingua) {
-      return mescolaArray(listaBase)
-        .slice(0, Math.min(numero, listaBase.length))
-        .map(item => creaRecordDomanda(item, lingua));
+    function generaOpzioniQuiz(rispostaCorretta, lingua, categoria, livello) {
+      const pool = RAW_DATABASE[categoria][Number(livello)]
+        .map(entry => getAcceptedAnswers(entry, lingua)[0])
+        .filter(v => v && normalizzaTesto(v) !== normalizzaTesto(rispostaCorretta));
+
+      const uniche = uniqueNormalizedStrings(pool);
+      const errate = mescolaArray(uniche).slice(0, 3);
+      return mescolaArray([rispostaCorretta, ...errate]);
+    }
+
+    function creaSessione(listaBase, numero, lingua, livello, categoria) {
+      const records = [];
+      while (records.length < numero) {
+        const round = mescolaArray(listaBase).map(entry => creaRecordDomanda(entry, lingua, livello, categoria));
+        for (const record of round) {
+          if (records.length < numero) {
+            records.push(record);
+          }
+        }
+      }
+      return records;
+    }
+
+    function usaModalitaQuiz() {
+      if (!sessioneAttiva || !sessioneDomande.length) return false;
+      return sessioneDomande[sessioneIndice].livello === 1;
     }
 
     function aggiornaStatistiche() {
@@ -724,12 +1062,19 @@
 
       const linguaSelect = document.getElementById("lingua");
       const livelloSelect = document.getElementById("livello");
+      const categoriaSelect = document.getElementById("categoria");
+
       const linguaTesto = linguaSelect.options[linguaSelect.selectedIndex].text;
       const livelloTesto = livelloSelect.options[livelloSelect.selectedIndex].text;
+      const categoriaTesto = categoriaSelect.options[categoriaSelect.selectedIndex].text;
 
       document.getElementById("sessionInfo").textContent = totale
-        ? `${linguaTesto} • ${livelloTesto} • ${sessioneIndice + 1}/${totale}`
+        ? `${linguaTesto} • ${categoriaTesto} • ${livelloTesto} • ${sessioneIndice + 1}/${totale}`
         : "Nessuna sessione attiva";
+
+      document.getElementById("modeBadge").textContent = totale
+        ? (usaModalitaQuiz() ? "Modalità: risposta multipla" : "Modalità: risposta scritta")
+        : "Modalità non attiva";
     }
 
     function aggiornaPulsanti() {
@@ -748,7 +1093,7 @@
       const item = sessioneDomande[sessioneIndice];
 
       if (!item.controllata) {
-        mainActionBtn.textContent = "Controlla";
+        mainActionBtn.textContent = item.livello === 1 ? "Scegli una risposta" : "Controlla";
         mainActionBtn.className = "primary";
       } else if (item.corretta) {
         mainActionBtn.textContent = "Corretto! Vai alla domanda successiva";
@@ -759,16 +1104,65 @@
       }
     }
 
+    function renderOpzioniQuiz(item) {
+      const box = document.getElementById("quizOptions");
+      box.innerHTML = "";
+
+      item.opzioniQuiz.forEach(opzione => {
+        const btn = document.createElement("button");
+        btn.className = "quiz-option";
+
+        if (item.rispostaUtente === opzione) {
+          btn.classList.add("selected");
+        }
+
+        if (item.controllata) {
+          if (normalizzaTesto(opzione) === normalizzaTesto(item.correttaMostrata)) {
+            btn.classList.add("correct");
+          }
+          if (
+            normalizzaTesto(item.rispostaUtente) === normalizzaTesto(opzione) &&
+            normalizzaTesto(opzione) !== normalizzaTesto(item.correttaMostrata)
+          ) {
+            btn.classList.add("wrong");
+          }
+        }
+
+        btn.textContent = opzione;
+
+        btn.onclick = function() {
+          if (item.controllata) return;
+          rispostaSelezionata = opzione;
+          item.rispostaUtente = opzione;
+          controllaRisposta();
+        };
+
+        box.appendChild(btn);
+      });
+    }
+
     function mostraDomandaCorrente() {
       if (!sessioneAttiva || !sessioneDomande.length) return;
 
       const item = sessioneDomande[sessioneIndice];
+      rispostaSelezionata = item.rispostaUtente || "";
 
       document.getElementById("summaryBox").classList.add("hidden");
       document.getElementById("mainCard").classList.remove("hidden");
-
       document.getElementById("domanda").textContent = item.domanda;
-      document.getElementById("risposta").value = item.rispostaUtente || "";
+
+      const input = document.getElementById("risposta");
+      const quizBox = document.getElementById("quizOptions");
+
+      if (item.livello === 1) {
+        input.style.display = "none";
+        quizBox.style.display = "grid";
+        renderOpzioniQuiz(item);
+      } else {
+        input.style.display = "block";
+        quizBox.style.display = "none";
+        input.value = item.rispostaUtente || "";
+      }
 
       if (item.controllata) {
         document.getElementById("pronuncia").textContent = "Pronuncia: " + item.pronuncia;
@@ -779,31 +1173,43 @@
       } else {
         document.getElementById("pronuncia").textContent = "Pronuncia: nascosta fino alla correzione";
         document.getElementById("risultato").textContent = "";
+        document.getElementById("rispostaCorretta").textContent = "";
+        document.getElementById("pronunciaCorretta").textContent = "";
         document.getElementById("answerBox").style.display = "none";
       }
 
       aggiornaStatistiche();
       aggiornaPulsanti();
-      document.getElementById("risposta").focus();
+
+      if (item.livello !== 1) {
+        input.focus();
+      }
     }
 
     function salvaRispostaTemporanea() {
       if (!sessioneAttiva || !sessioneDomande.length) return;
-      sessioneDomande[sessioneIndice].rispostaUtente = document.getElementById("risposta").value;
+      const item = sessioneDomande[sessioneIndice];
+
+      if (item.livello === 1) {
+        item.rispostaUtente = rispostaSelezionata || item.rispostaUtente || "";
+      } else {
+        item.rispostaUtente = document.getElementById("risposta").value;
+      }
     }
 
     function iniziaSessione() {
       const lingua = document.getElementById("lingua").value;
-      const livello = document.getElementById("livello").value;
-      const numeroInput = parseInt(document.getElementById("numeroDomande").value, 10) || 10;
-      const base = domande[lingua][livello];
-      const numeroFinale = Math.max(1, Math.min(numeroInput, base.length));
+      const categoria = document.getElementById("categoria").value;
+      const livello = parseInt(document.getElementById("livello").value, 10);
+      const numero = parseInt(document.getElementById("numeroDomande").value, 10);
 
-      document.getElementById("numeroDomande").value = numeroFinale;
+      const base = RAW_DATABASE[categoria][livello];
 
-      sessioneDomande = creaSessione(base, numeroFinale, lingua);
+      sessioneDomande = creaSessione(base, numero, lingua, livello, categoria);
       sessioneIndice = 0;
       sessioneAttiva = true;
+      rispostaSelezionata = "";
+      startTimer();
 
       mostraDomandaCorrente();
     }
@@ -815,7 +1221,18 @@
       }
 
       const item = sessioneDomande[sessioneIndice];
-      const rispostaOriginale = document.getElementById("risposta").value;
+      let rispostaOriginale = "";
+
+      if (item.livello === 1) {
+        rispostaOriginale = item.rispostaUtente || "";
+        if (!rispostaOriginale) {
+          document.getElementById("risultato").textContent = "Seleziona una risposta.";
+          return;
+        }
+      } else {
+        rispostaOriginale = document.getElementById("risposta").value;
+      }
+
       const rispostaNorm = normalizzaTesto(rispostaOriginale);
 
       item.rispostaUtente = rispostaOriginale;
@@ -827,6 +1244,10 @@
       document.getElementById("rispostaCorretta").textContent = item.correttaMostrata;
       document.getElementById("pronunciaCorretta").textContent = item.pronuncia;
       document.getElementById("answerBox").style.display = "block";
+
+      if (item.livello === 1) {
+        renderOpzioniQuiz(item);
+      }
 
       aggiornaStatistiche();
       aggiornaPulsanti();
@@ -846,6 +1267,10 @@
       const item = sessioneDomande[sessioneIndice];
 
       if (!item.controllata) {
+        if (item.livello === 1) {
+          document.getElementById("risultato").textContent = "Seleziona una risposta per continuare.";
+          return;
+        }
         controllaRisposta();
       } else {
         domandaSuccessiva();
@@ -870,7 +1295,11 @@
       if (!sessioneAttiva || !sessioneDomande.length) return;
       const item = sessioneDomande[sessioneIndice];
       const utterance = new SpeechSynthesisUtterance(item.correttaMostrata);
-      utterance.lang = item.lingua;
+
+      if (item.lingua === "en") utterance.lang = "en-US";
+      if (item.lingua === "fr-FR") utterance.lang = "fr-FR";
+      if (item.lingua === "es-ES") utterance.lang = "es-ES";
+
       speechSynthesis.speak(utterance);
     }
 
@@ -879,6 +1308,7 @@
 
       salvaRispostaTemporanea();
       sessioneAttiva = false;
+      stopTimer();
 
       const corrette = sessioneDomande.filter(x => x.corretta === true).length;
       const sbagliate = sessioneDomande.filter(x => x.corretta === false).length;
@@ -892,6 +1322,7 @@
       document.getElementById("finalSbagliate").textContent = sbagliate;
       document.getElementById("finalTotale").textContent = totale;
       document.getElementById("finalPercentuale").textContent = percentuale + "%";
+      document.getElementById("finalTempo").textContent = formatTime(timerSeconds);
 
       const list = document.getElementById("summaryList");
       list.innerHTML = "";
@@ -925,18 +1356,19 @@
       if (!sessioneDomande.length) return;
 
       sessioneDomande = sessioneDomande.map(item => ({
-        domanda: item.domanda,
-        risposteAccettate: [...item.risposteAccettate],
-        pronuncia: item.pronuncia,
-        lingua: item.lingua,
+        ...item,
         rispostaUtente: "",
         corretta: null,
-        correttaMostrata: item.correttaMostrata,
-        controllata: false
+        controllata: false,
+        opzioniQuiz: item.livello === 1
+          ? generaOpzioniQuiz(item.correttaMostrata, item.lingua, item.categoria, item.livello)
+          : []
       }));
 
       sessioneIndice = 0;
       sessioneAttiva = true;
+      rispostaSelezionata = "";
+      startTimer();
       mostraDomandaCorrente();
     }
 
@@ -948,18 +1380,19 @@
       }
 
       sessioneDomande = errate.map(item => ({
-        domanda: item.domanda,
-        risposteAccettate: [...item.risposteAccettate],
-        pronuncia: item.pronuncia,
-        lingua: item.lingua,
+        ...item,
         rispostaUtente: "",
         corretta: null,
-        correttaMostrata: item.correttaMostrata,
-        controllata: false
+        controllata: false,
+        opzioniQuiz: item.livello === 1
+          ? generaOpzioniQuiz(item.correttaMostrata, item.lingua, item.categoria, item.livello)
+          : []
       }));
 
       sessioneIndice = 0;
       sessioneAttiva = true;
+      rispostaSelezionata = "";
+      startTimer();
       mostraDomandaCorrente();
     }
 
@@ -967,6 +1400,10 @@
       sessioneDomande = [];
       sessioneIndice = 0;
       sessioneAttiva = false;
+      rispostaSelezionata = "";
+      stopTimer();
+      timerSeconds = 0;
+      document.getElementById("timerDisplay").textContent = "00:00";
 
       document.getElementById("summaryBox").classList.add("hidden");
       document.getElementById("mainCard").classList.remove("hidden");
@@ -975,6 +1412,9 @@
       document.getElementById("pronuncia").textContent = "Pronuncia: nascosta fino alla correzione";
       document.getElementById("risultato").textContent = "";
       document.getElementById("risposta").value = "";
+      document.getElementById("risposta").style.display = "block";
+      document.getElementById("quizOptions").style.display = "none";
+      document.getElementById("quizOptions").innerHTML = "";
       document.getElementById("answerBox").style.display = "none";
 
       aggiornaStatistiche();
@@ -990,13 +1430,14 @@
     }
 
     document.getElementById("risposta").addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
+      if (event.key === "Enter" && !usaModalitaQuiz()) {
         azionePrincipale();
       }
     });
 
     aggiornaStatistiche();
     aggiornaPulsanti();
+    document.getElementById("timerDisplay").textContent = "00:00";
   </script>
 </body>
 </html>
