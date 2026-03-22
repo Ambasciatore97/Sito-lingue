@@ -3,35 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Impara inglese, francese e spagnolo gratis | Quiz interattivi</title>
-  <meta name="description" content="Impara lingue straniere gratis con quiz interattivi, pronuncia audio e livelli progressivi. Inglese UK/US, francese e spagnolo.">
+  <title>Impara lingue gratis | Quiz interattivi</title>
+  <meta name="description" content="Allenati con quiz di inglese, francese e spagnolo. Migliora ogni giorno con livelli automatici e pronuncia audio.">
 
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f3f4f6;
       margin: 0;
-      padding: 0;
     }
 
     .container {
       max-width: 700px;
-      margin: 40px auto;
+      margin: 20px auto;
       background: white;
       padding: 25px;
       border-radius: 16px;
       box-shadow: 0 4px 18px rgba(0,0,0,0.08);
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
+    h1 { text-align: center; }
+
+    .progress-bar {
+      height: 10px;
+      background: #ddd;
+      border-radius: 10px;
+      margin: 15px 0;
     }
 
-    p.subtitle {
-      text-align: center;
-      color: #555;
-      margin-bottom: 25px;
+    .progress {
+      height: 10px;
+      background: #2563eb;
+      border-radius: 10px;
+      width: 0%;
     }
 
     .controls {
@@ -39,319 +43,136 @@
       gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 20px;
     }
 
     select, input, button {
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
       font-size: 16px;
     }
 
     button {
-      cursor: pointer;
-      border: none;
       background: #2563eb;
       color: white;
-    }
-
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    .question-box {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      padding: 20px;
-      border-radius: 14px;
-      margin-bottom: 20px;
+      border: none;
+      cursor: pointer;
     }
 
     .question {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
+      font-size: 22px;
       text-align: center;
-    }
-
-    .pronunciation {
-      text-align: center;
-      color: #666;
-      margin-bottom: 15px;
-      font-style: italic;
+      margin: 20px 0;
     }
 
     .result {
-      margin-top: 15px;
+      text-align: center;
       font-weight: bold;
-      text-align: center;
-    }
-
-    .score {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 18px;
-    }
-
-    .ad-popup {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-
-    .ad-content {
-      background: white;
-      width: 90%;
-      max-width: 500px;
-      padding: 30px;
-      border-radius: 16px;
-      text-align: center;
-    }
-
-    .ad-content h2 {
-      margin-top: 0;
-    }
-
-    .skip-info {
-      margin-top: 15px;
-      color: #666;
-    }
-
-    .hidden {
-      display: none;
+      margin-top: 10px;
     }
 
     @media (max-width: 600px) {
       .container {
         margin: 10px;
-        padding: 15px;
-      }
-
-      .question {
-        font-size: 20px;
       }
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <p style="text-align:center; font-weight:bold; color:#2563eb;">
-      Allenati ogni giorno e migliora la tua pronuncia e traduzione in modo semplice 🚀
-    </p>
+<div class="container">
 
-    <h1>Impara le Lingue</h1>
-    <p class="subtitle">Allenati con quiz casuali per livello e lingua</p>
+  <h1>Impara le Lingue 🚀</h1>
 
-    <div class="controls">
-      <select id="lingua">
-        <option value="en-uk">Inglese UK</option>
-        <option value="en-us">Inglese US</option>
-        <option value="fr-fr">Francese</option>
-        <option value="es-es">Spagnolo</option>
-      </select>
-
-      <select id="livello">
-        <option value="facile">Facile</option>
-        <option value="medio">Medio</option>
-        <option value="difficile">Difficile</option>
-      </select>
-
-      <button onclick="nuovaDomanda()">Nuova domanda</button>
-    </div>
-
-    <div class="question-box">
-      <div class="question" id="domanda">Premi "Nuova domanda"</div>
-      <div class="pronunciation" id="pronuncia">Pronuncia: -</div>
-
-      <input type="text" id="risposta" placeholder="Scrivi la risposta" style="width:100%; box-sizing:border-box;">
-
-      <div class="controls" style="margin-top:15px;">
-        <button onclick="controllaRisposta()">Controlla</button>
-        <button onclick="ascoltaPronuncia()">🔊 Ascolta</button>
-      </div>
-
-      <div class="result" id="risultato"></div>
-    </div>
-
-    <div class="score">
-      Corrette: <span id="corrette">0</span> |
-      Totali: <span id="totali">0</span>
-    </div>
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
   </div>
 
-  <div class="ad-popup" id="adPopup">
-    <div class="ad-content">
-      <h2>Pubblicità demo</h2>
-      <p>Qui in futuro potremo inserire una pubblicità reale.</p>
-      <p>Per ora è solo una simulazione del popup ogni 40 domande.</p>
-      <button id="skipBtn" class="hidden" onclick="chiudiPubblicita()">Chiudi pubblicità</button>
-      <div class="skip-info" id="skipInfo">Potrai chiudere tra 10 secondi...</div>
-    </div>
+  <div class="controls">
+    <select id="lingua">
+      <option value="en">Inglese</option>
+      <option value="fr">Francese</option>
+      <option value="es">Spagnolo</option>
+    </select>
   </div>
 
-  <script>
-    const domande = {
-      "en-uk": {
-        facile: [
-          { domanda: "Come si dice 'cane' in inglese?", risposta: "dog", pronuncia: "dog" },
-          { domanda: "Come si dice 'casa' in inglese?", risposta: "house", pronuncia: "haus" },
-          { domanda: "Come si dice 'gatto' in inglese?", risposta: "cat", pronuncia: "cat" }
-        ],
-        medio: [
-          { domanda: "Traduci: 'Sto mangiando'", risposta: "i am eating", pronuncia: "ai am i-ting" },
-          { domanda: "Traduci: 'Lui vive a Londra'", risposta: "he lives in london", pronuncia: "hi livz in london" }
-        ],
-        difficile: [
-          { domanda: "Traduci: 'Avrei potuto aiutarti'", risposta: "i could have helped you", pronuncia: "ai cud av helpt iu" },
-          { domanda: "Traduci: 'Se lo avessi saputo, sarei venuto'", risposta: "if i had known, i would have come", pronuncia: "if ai ad noun, ai wud av cam" }
-        ]
-      },
-      "en-us": {
-        facile: [
-          { domanda: "Come si dice 'macchina' in inglese americano?", risposta: "car", pronuncia: "car" },
-          { domanda: "Come si dice 'acqua' in inglese americano?", risposta: "water", pronuncia: "uoder" }
-        ],
-        medio: [
-          { domanda: "Traduci: 'Sto lavorando adesso'", risposta: "i am working now", pronuncia: "ai am uorking nau" }
-        ],
-        difficile: [
-          { domanda: "Traduci: 'Avrei dovuto chiamarti ieri'", risposta: "i should have called you yesterday", pronuncia: "ai sciud av colld iu iesterdei" }
-        ]
-      },
-      "fr-fr": {
-        facile: [
-          { domanda: "Come si dice 'gatto' in francese?", risposta: "chat", pronuncia: "sha" },
-          { domanda: "Come si dice 'pane' in francese?", risposta: "pain", pronuncia: "pen" }
-        ],
-        medio: [
-          { domanda: "Traduci: 'Io sono pronto'", risposta: "je suis prêt", pronuncia: "ge sui pre" }
-        ],
-        difficile: [
-          { domanda: "Traduci: 'Se avessi tempo, verrei'", risposta: "si j'avais le temps, je viendrais", pronuncia: "si giavè le tan, ge viandrè" }
-        ]
-      },
-      "es-es": {
-        facile: [
-          { domanda: "Come si dice 'casa' in spagnolo?", risposta: "casa", pronuncia: "casa" },
-          { domanda: "Come si dice 'libro' in spagnolo?", risposta: "libro", pronuncia: "libro" }
-        ],
-        medio: [
-          { domanda: "Traduci: 'Sto studiando'", risposta: "estoy estudiando", pronuncia: "estoi estudiando" }
-        ],
-        difficile: [
-          { domanda: "Traduci: 'Avrei voluto visitare Madrid'", risposta: "me habría gustado visitar madrid", pronuncia: "me avria gustado visitar madrid" }
-        ]
-      }
-    };
+  <div class="question" id="domanda"></div>
 
-    let domandaCorrente = null;
-    let corrette = 0;
-    let totali = 0;
+  <input type="text" id="risposta" placeholder="Scrivi la risposta" style="width:100%">
 
-    function aggiornaPunteggio() {
-      document.getElementById("corrette").textContent = corrette;
-      document.getElementById("totali").textContent = totali;
-    }
+  <div class="controls">
+    <button onclick="controlla()">Controlla</button>
+    <button onclick="parla()">🔊</button>
+  </div>
 
-    function normalizzaTesto(testo) {
-      return testo.toLowerCase().trim().replace(/\s+/g, " ");
-    }
+  <div class="result" id="risultato"></div>
 
-    function nuovaDomanda() {
-      const lingua = document.getElementById("lingua").value;
-      const livello = document.getElementById("livello").value;
+  <p style="text-align:center">Livello: <span id="livello">1</span></p>
 
-      const lista = domande[lingua][livello];
-      const indice = Math.floor(Math.random() * lista.length);
+</div>
 
-      domandaCorrente = {
-        ...lista[indice],
-        lingua: lingua
-      };
+<script>
+let livello = 1;
+let corrette = 0;
+let totale = 0;
+let domandaCorrente;
 
-      document.getElementById("domanda").textContent = domandaCorrente.domanda;
-      document.getElementById("pronuncia").textContent = "Pronuncia: " + domandaCorrente.pronuncia;
-      document.getElementById("risultato").textContent = "";
-      document.getElementById("risposta").value = "";
-    }
+const domande = [
+  {it:"cane", en:"dog", fr:"chien", es:"perro"},
+  {it:"gatto", en:"cat", fr:"chat", es:"gato"},
+  {it:"casa", en:"house", fr:"maison", es:"casa"},
+  {it:"acqua", en:"water", fr:"eau", es:"agua"},
+  {it:"pane", en:"bread", fr:"pain", es:"pan"}
+];
 
-    function controllaRisposta() {
-      if (!domandaCorrente) {
-        document.getElementById("risultato").textContent = "Prima genera una domanda.";
-        return;
-      }
+function nuovaDomanda(){
+  const lingua = document.getElementById("lingua").value;
+  domandaCorrente = domande[Math.floor(Math.random()*domande.length)];
 
-      const rispostaUtente = normalizzaTesto(document.getElementById("risposta").value);
-      const rispostaCorretta = normalizzaTesto(domandaCorrente.risposta);
+  document.getElementById("domanda").innerText =
+    "Traduci: " + domandaCorrente.it + " → (" + lingua + ")";
+}
 
-      totali++;
+function controlla(){
+  const lingua = document.getElementById("lingua").value;
+  const risposta = document.getElementById("risposta").value.toLowerCase();
 
-      if (rispostaUtente === rispostaCorretta) {
-        corrette++;
-        document.getElementById("risultato").textContent = "✅ Corretto!";
-      } else {
-        document.getElementById("risultato").textContent = "❌ Sbagliato! Risposta giusta: " + domandaCorrente.risposta;
-      }
+  totale++;
 
-      aggiornaPunteggio();
+  if(risposta === domandaCorrente[lingua]){
+    corrette++;
+    document.getElementById("risultato").innerText = "✅ Corretto!";
+  } else {
+    document.getElementById("risultato").innerText =
+      "❌ Sbagliato: " + domandaCorrente[lingua];
+  }
 
-      if (totali % 40 === 0) {
-        mostraPubblicitaDemo();
-      } else {
-        setTimeout(() => {
-          nuovaDomanda();
-        }, 1000);
-      }
-    }
+  aggiornaLivello();
+  aggiornaProgress();
+  document.getElementById("risposta").value="";
+  nuovaDomanda();
+}
 
-    function ascoltaPronuncia() {
-      if (!domandaCorrente) return;
+function aggiornaLivello(){
+  if(corrette % 5 === 0){
+    livello++;
+    document.getElementById("livello").innerText = livello;
+  }
+}
 
-      const testo = domandaCorrente.risposta;
-      const utterance = new SpeechSynthesisUtterance(testo);
+function aggiornaProgress(){
+  let perc = (corrette % 5) * 20;
+  document.getElementById("progress").style.width = perc + "%";
+}
 
-      if (domandaCorrente.lingua === "en-uk") utterance.lang = "en-GB";
-      if (domandaCorrente.lingua === "en-us") utterance.lang = "en-US";
-      if (domandaCorrente.lingua === "fr-fr") utterance.lang = "fr-FR";
-      if (domandaCorrente.lingua === "es-es") utterance.lang = "es-ES";
+function parla(){
+  const lingua = document.getElementById("lingua").value;
+  const speech = new SpeechSynthesisUtterance(domandaCorrente[lingua]);
+  speech.lang = lingua;
+  speechSynthesis.speak(speech);
+}
 
-      speechSynthesis.speak(utterance);
-    }
+nuovaDomanda();
+</script>
 
-    function mostraPubblicitaDemo() {
-      const popup = document.getElementById("adPopup");
-      const skipBtn = document.getElementById("skipBtn");
-      const skipInfo = document.getElementById("skipInfo");
-
-      popup.style.display = "flex";
-      skipBtn.classList.add("hidden");
-      skipInfo.textContent = "Potrai chiudere tra 10 secondi...";
-
-      let secondi = 10;
-
-      const timer = setInterval(() => {
-        secondi--;
-        skipInfo.textContent = "Potrai chiudere tra " + secondi + " secondi...";
-
-        if (secondi <= 0) {
-          clearInterval(timer);
-          skipBtn.classList.remove("hidden");
-          skipInfo.textContent = "Ora puoi chiudere la pubblicità.";
-        }
-      }, 1000);
-    }
-
-    function chiudiPubblicita() {
-      document.getElementById("adPopup").style.display = "none";
-      nuovaDomanda();
-    }
-
-    aggiornaPunteggio();
-  </script>
 </body>
 </html>
