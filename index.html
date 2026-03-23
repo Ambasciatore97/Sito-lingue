@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f97316">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="color-scheme" content="light">
   <title>Impara lingue gratis | Quiz interattivi</title>
   <meta name="description" content="Impara inglese, francese e spagnolo con quiz interattivi, teoria grammaticale, pronuncia audio, livelli e riepilogo finale.">
   <link rel="stylesheet" href="style.css">
@@ -12,10 +16,8 @@
   <div class="app">
     <div class="header">
       <div class="logo-container">
-  <img src="logo.png" alt="BunnyLingo Logo" class="logo">
-</div>
-
-</div>
+        <img src="logo.png" alt="BunnyLingo Logo Mascotte" class="logo" id="mascotte">
+      </div>
       <p class="subtitle">Impara le lingue in modo semplice, veloce e divertente 🥕</p>
     </div>
 
@@ -125,7 +127,7 @@
             <div class="pronunciation" id="pronuncia">Pronuncia: nascosta fino alla correzione</div>
           </div>
 
-          <input type="text" id="risposta" placeholder="Scrivi qui la risposta" style="display:none;">
+          <input type="text" id="risposta" placeholder="Scrivi qui la risposta" style="display:none;" maxlength="120" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
 
           <div class="quiz-options" id="quizOptions"></div>
 
@@ -189,6 +191,13 @@
     </div>
   </div>
 
+  <div class="final-mascot-popup" id="finalMascotPopup" aria-hidden="true">
+    <div class="final-mascot-card">
+      <img id="finalMascotImg" src="logo-happy.png" alt="Mascotte BunnyLingo">
+      <div class="final-mascot-text" id="finalMascotText">Ottimo lavoro!</div>
+    </div>
+  </div>
+
   <div class="ad-popup" id="adPopup">
     <div class="ad-content">
       <h2>Pubblicità demo</h2>
@@ -201,4 +210,21 @@
   <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
+<div class="welcome-screen" id="welcomeScreen">
+  <div class="welcome-card">
+    <img src="logo.png" alt="Logo BunnyLingo" class="welcome-logo">
+    <h1 class="welcome-title">Benvenuto su BunnyLingo</h1>
+    <p class="welcome-text">
+      BunnyLingo nasce per aiutarti a imparare inglese, francese e spagnolo
+      in modo semplice, graduale e divertente.
+    </p>
+    <p class="welcome-text">
+      Allenati con quiz interattivi, teoria grammaticale, pronuncia e categorie
+      ispirate alle materie scolastiche.
+    </p>
+    <button class="primary welcome-button" onclick="chiudiWelcomeScreen()">
+      Entra in BunnyLingo
+    </button>
+  </div>
+</div>
 </html>

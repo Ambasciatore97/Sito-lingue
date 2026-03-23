@@ -206,10 +206,101 @@ const PHYSICS_L3 = [
   ["La gravità attira i corpi verso la Terra","gravity pulls bodies toward the earth","gravity pulls bodies toward the earth","la gravité attire les corps vers la terre","la gravedad atrae los cuerpos hacia la tierra","gravity pulz bodis touod dha erth","gravi-di pulz badis tor-dh the erth","la gravité atir le cor ver la ter","la gravedad atrae los cuerpos hacia la tierra"]
 ];
 
+const GEN_COMMON_L2 = {
+  soggetti: [
+    { it: "io", en: "I", fr: "je", es: "yo" },
+    { it: "tu", en: "you", fr: "tu", es: "tú" },
+    { it: "lui", en: "he", fr: "il", es: "él" },
+    { it: "lei", en: "she", fr: "elle", es: "ella" }
+  ],
+
+  verbi: [
+    {
+      it: "mangiare",
+      en: "eat",
+      fr: "manger",
+      es: "comer",
+      type: "present_continuous"
+    },
+    {
+      it: "bere",
+      en: "drink",
+      fr: "boire",
+      es: "beber",
+      type: "present_simple"
+    },
+    {
+      it: "studiare",
+      en: "study",
+      fr: "étudier",
+      es: "estudiar",
+      type: "present_simple"
+    }
+  ],
+
+  oggetti: [
+    { it: "una mela", en: "an apple", fr: "une pomme", es: "una manzana" },
+    { it: "acqua", en: "water", fr: "de l'eau", es: "agua" },
+    { it: "inglese", en: "english", fr: "l'anglais", es: "inglés" }
+  ]
+};
+function generaFrasiCommonL2() {
+  const results = [];
+
+  GEN_COMMON_L2.soggetti.forEach(soggetto => {
+    GEN_COMMON_L2.verbi.forEach(verbo => {
+      GEN_COMMON_L2.oggetti.forEach(oggetto => {
+
+        // ITALIANO (prompt)
+        const fraseIT = `${soggetto.it} ${verbo.it} ${oggetto.it}`;
+
+        // INGLESE
+        let en = "";
+        if (verbo.type === "present_continuous") {
+          const aux = soggetto.en === "I" ? "am" :
+                      soggetto.en === "he" || soggetto.en === "she" ? "is" : "are";
+          en = `${soggetto.en} ${aux} ${verbo.en}ing ${oggetto.en}`;
+        } else {
+          const v = (soggetto.en === "he" || soggetto.en === "she")
+            ? verbo.en + "s"
+            : verbo.en;
+          en = `${soggetto.en} ${v} ${oggetto.en}`;
+        }
+
+        // FRANCESE (semplificato)
+        const fr = `${soggetto.fr} ${verbo.fr} ${oggetto.fr}`;
+
+        // SPAGNOLO
+        const es = `${soggetto.es} ${verbo.es} ${oggetto.es}`;
+
+        results.push([
+          fraseIT,
+          en,
+          en,
+          fr,
+          es,
+          en,
+          en,
+          fr,
+          es,
+          verbo.type,
+          "present",
+          "presente"
+        ]);
+
+      });
+    });
+  });
+
+  return buildEntries(results, 2);
+}
 const RAW_DATABASE = {
   "uso-comune": {
     1: buildEntries(COMMON_L1, 1),
-    2: buildEntries(COMMON_L2, 2),
+    2: [
+    ...buildEntries(COMMON_L2, 2),
+    ...generaFrasiCommonL2()
+  ],
     3: buildEntries(COMMON_L3, 3)
   },
   "storia": {

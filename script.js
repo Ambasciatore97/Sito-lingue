@@ -4,6 +4,7 @@ let sessioneAttiva = false;
 let rispostaSelezionata = "";
 let timerSeconds = 0;
 let timerInterval = null;
+let finalMascotTimer = null;
 
 function normalizzaTesto(testo) {
   return String(testo)
@@ -11,6 +12,13 @@ function normalizzaTesto(testo) {
     .trim()
     .replace(/\s+/g, " ")
     .replace(/[’]/g, "'");
+}
+
+function pulisciInput(testo) {
+  return String(testo)
+    .replace(/[<>]/g, "")
+    .trim()
+    .slice(0, 120);
 }
 
 function uniqueNormalizedStrings(arr) {
@@ -36,9 +44,6 @@ function formatTime(seconds) {
 
 function startTimer() {
   stopTimer();
-  timerSeconds = 0;
-  document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
-
   timerInterval = setInterval(() => {
     timerSeconds++;
     document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
@@ -108,14 +113,51 @@ function getTheory(entry, lingua) {
   return langTheory[theoryKey] || null;
 }
 
+function generaErroriInglese(fraseCorretta) {
+  const errori = [];
+
+  const base = fraseCorretta;
+
+  // 1. togli articolo (an, a, the)
+  errori.push(base.replace(/\b(an|a|the)\b\s*/gi, ""));
+
+  // 2. errore verbo (eat → eats / eats → eat)
+  errori.push(
+    base.replace(/\beats\b/, "eat")
+        .replace(/\beat\b/, "eats")
+  );
+
+  // 3. errore tempo continuo
+  errori.push(
+    base.replace(/\b(am|is|are)\b\s*/g, "")
+  );
+
+  // 4. aggiunge -ing sbagliato
+  errori.push(
+    base.replace(/\beat\b/, "eating")
+  );
+
+  return uniqueNormalizedStrings(errori).filter(e => normalizzaTesto(e) !== normalizzaTesto(fraseCorretta));
+}
+
 function generaOpzioniQuiz(rispostaCorretta, lingua, categoria, livello) {
+  let errate = [];
+
+  if (lingua === "en") {
+    errate = generaErroriInglese(rispostaCorretta);
+  }
+
   const pool = RAW_DATABASE[categoria][Number(livello)]
     .map(entry => getAcceptedAnswers(entry, lingua)[0])
     .filter(v => v && normalizzaTesto(v) !== normalizzaTesto(rispostaCorretta));
 
-  const uniche = uniqueNormalizedStrings(pool);
-  const errate = mescolaArray(uniche).slice(0, 3);
-  return mescolaArray([rispostaCorretta, ...errate]);
+  const extra = uniqueNormalizedStrings(pool);
+  const tutteErrate = mescolaArray([...errate, ...extra]);
+
+  return mescolaArray([
+    rispostaCorretta,
+    ...tutteErrate.slice(0, 3)
+  ]);
 }
 
 function creaRecordDomanda(entry, lingua, livello, categoria) {
@@ -158,6 +200,31 @@ function creaSessione(listaBase, numero, lingua, livello, categoria) {
 function usaModalitaQuiz() {
   if (!sessioneAttiva || !sessioneDomande.length) return false;
   return sessioneDomande[sessioneIndice].livello === 1;
+}
+
+function salvaProgresso() {
+  const dati = {
+    sessioneDomande,
+    sessioneIndice,
+    sessioneAttiva,
+    timerSeconds
+  };
+
+  localStorage.setItem("progressiLingue", JSON.stringify(dati));
+}
+
+function caricaProgresso() {
+  const dati = localStorage.getItem("progressiLingue");
+  if (!dati) return;
+
+  const parsed = JSON.parse(dati);
+
+  sessioneDomande = parsed.sessioneDomande || [];
+  sessioneIndice = parsed.sessioneIndice || 0;
+  sessioneAttiva = false;
+  timerSeconds = parsed.timerSeconds || 0;
+
+  document.getElementById("timerDisplay").textContent = "00:00";
 }
 
 function aggiornaStatistiche() {
@@ -272,6 +339,19 @@ function renderOpzioniQuiz(item) {
   });
 }
 
+function aggiornaMascotteHeader(stato) {
+  const mascotte = document.getElementById("mascotte");
+  if (!mascotte) return;
+
+  if (stato === "happy") {
+    mascotte.src = "logo-happy.png";
+  } else if (stato === "sad") {
+    mascotte.src = "logo-sad.png";
+  } else {
+    mascotte.src = "logo-neutral.png";
+  }
+}
+
 function mostraDomandaCorrente() {
   if (!sessioneAttiva || !sessioneDomande.length) return;
 
@@ -281,6 +361,12 @@ function mostraDomandaCorrente() {
   document.getElementById("summaryBox").classList.add("hidden");
   document.getElementById("mainCard").classList.remove("hidden");
   document.getElementById("domanda").textContent = item.domanda;
+
+  if (!item.controllata) {
+    aggiornaMascotteHeader("neutral");
+  } else {
+    aggiornaMascotteHeader(item.corretta ? "happy" : "sad");
+  }
 
   mostraTeoria(item);
 
@@ -342,8 +428,11 @@ function iniziaSessione() {
   sessioneIndice = 0;
   sessioneAttiva = true;
   rispostaSelezionata = "";
+  timerSeconds = 0;
+  document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
   startTimer();
 
+  aggiornaMascotteHeader("neutral");
   mostraDomandaCorrente();
   salvaProgresso();
 }
@@ -364,7 +453,8 @@ function controllaRisposta() {
       return;
     }
   } else {
-    rispostaOriginale = document.getElementById("risposta").value;
+    rispostaOriginale = pulisciInput(document.getElementById("risposta").value);
+    document.getElementById("risposta").value = rispostaOriginale;
   }
 
   const rispostaNorm = normalizzaTesto(rispostaOriginale);
@@ -372,6 +462,8 @@ function controllaRisposta() {
   item.rispostaUtente = rispostaOriginale;
   item.corretta = item.risposteAccettate.some(r => normalizzaTesto(r) === rispostaNorm);
   item.controllata = true;
+
+  aggiornaMascotteHeader(item.corretta ? "happy" : "sad");
 
   document.getElementById("pronuncia").textContent = "Pronuncia: " + item.pronuncia;
   document.getElementById("risultato").textContent = item.corretta ? "✅ Corretto!" : "❌ Sbagliato!";
@@ -385,6 +477,7 @@ function controllaRisposta() {
 
   aggiornaStatistiche();
   aggiornaPulsanti();
+  salvaProgresso();
 
   const date = sessioneDomande.filter(x => x.controllata).length;
   if (date > 0 && date % 40 === 0) {
@@ -406,38 +499,8 @@ function azionePrincipale() {
       return;
     }
     controllaRisposta();
-    salvaProgresso();{
-  const dati = {
-    sessioneDomande,
-    sessioneIndice,
-    sessioneAttiva,
-    timerSeconds
-  };
-
-  localStorage.setItem("progressiLingue", JSON.stringify(dati));
-}
-
-function caricaProgresso() {
-  const dati = localStorage.getItem("progressiLingue");
-
-  if (!dati) return;
-
-  const parsed = JSON.parse(dati);
-
-  sessioneDomande = parsed.sessioneDomande || [];
-  sessioneIndice = parsed.sessioneIndice || 0;
-  sessioneAttiva = parsed.sessioneAttiva || false;
-  timerSeconds = parsed.timerSeconds || 0;
-
-  if (sessioneAttiva && sessioneDomande.length > 0) {
-    document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
-    mostraDomandaCorrente();
-    startTimer();
-  }
-}
   } else {
     domandaSuccessiva();
-    salvaProgresso();
   }
 }
 
@@ -454,6 +517,7 @@ function domandaSuccessiva() {
   salvaRispostaTemporanea();
   sessioneIndice++;
   mostraDomandaCorrente();
+  salvaProgresso();
 }
 
 function ascoltaPronuncia() {
@@ -469,9 +533,53 @@ function ascoltaPronuncia() {
   speechSynthesis.speak(utterance);
 }
 
+function mostraPopupFinaleMascotte(percentuale) {
+  const popup = document.getElementById("finalMascotPopup");
+  const img = document.getElementById("finalMascotImg");
+  const text = document.getElementById("finalMascotText");
+
+  if (!popup || !img || !text) return;
+
+  if (percentuale >= 75) {
+    img.src = "logo-happy.png";
+    text.textContent = "Fantastico lavoro!";
+  } else if (percentuale >= 50) {
+    img.src = "logo-neutral.png";
+    text.textContent = "Buon risultato, continua così!";
+  } else {
+    img.src = "logo-sad.png";
+    text.textContent = "Non mollare, riprova!";
+  }
+
+  popup.setAttribute("aria-hidden", "false");
+  popup.classList.add("show");
+
+  if (finalMascotTimer) {
+    clearTimeout(finalMascotTimer);
+  }
+
+  finalMascotTimer = setTimeout(() => {
+    popup.classList.remove("show");
+    popup.setAttribute("aria-hidden", "true");
+  }, 3000);
+  }
+
+function aggiornaMascotteHeaderFinale(percentuale) {
+  const mascotte = document.getElementById("mascotte");
+  if (!mascotte) return;
+
+  if (percentuale >= 75) {
+    mascotte.src = "logo-happy.png";
+  } else if (percentuale >= 50) {
+    mascotte.src = "logo-neutral.png";
+  } else {
+    mascotte.src = "logo-sad.png";
+  }
+}
+
 function fineSessione() {
   if (!sessioneDomande.length) return;
-  
+
   salvaRispostaTemporanea();
   sessioneAttiva = false;
   stopTimer();
@@ -480,6 +588,9 @@ function fineSessione() {
   const sbagliate = sessioneDomande.filter(x => x.corretta === false).length;
   const totale = sessioneDomande.length;
   const percentuale = totale ? Math.round((corrette / totale) * 100) : 0;
+
+  mostraPopupFinaleMascotte(percentuale);
+  aggiornaMascotteHeaderFinale(percentuale);
 
   document.getElementById("mainCard").classList.add("hidden");
   document.getElementById("summaryBox").classList.remove("hidden");
@@ -496,6 +607,7 @@ function fineSessione() {
   sessioneDomande.forEach((item, index) => {
     const div = document.createElement("div");
     let cls = "summary-item";
+
     if (item.corretta === true) cls += " correct";
     if (item.corretta === false) cls += " wrong";
 
@@ -504,19 +616,35 @@ function fineSessione() {
     if (item.corretta === false) esito = "Sbagliata";
 
     div.className = cls;
-    div.innerHTML = `
-      <div class="summary-title">Domanda ${index + 1}: ${item.domanda}</div>
-      <div><strong>Tua risposta:</strong> ${item.rispostaUtente || "(vuota)"}</div>
-      <div><strong>Risposta corretta:</strong> ${item.correttaMostrata}</div>
-      <div><strong>Pronuncia:</strong> ${item.pronuncia}</div>
-      <div><strong>Esito:</strong> ${esito}</div>
-    `;
+
+    const title = document.createElement("div");
+    title.className = "summary-title";
+    title.textContent = `Domanda ${index + 1}: ${item.domanda}`;
+
+    const userAnswer = document.createElement("div");
+    userAnswer.textContent = `Tua risposta: ${item.rispostaUtente || "(vuota)"}`;
+
+    const correctAnswer = document.createElement("div");
+    correctAnswer.textContent = `Risposta corretta: ${item.correttaMostrata}`;
+
+    const pronunciation = document.createElement("div");
+    pronunciation.textContent = `Pronuncia: ${item.pronuncia}`;
+
+    const result = document.createElement("div");
+    result.textContent = `Esito: ${esito}`;
+
+    div.appendChild(title);
+    div.appendChild(userAnswer);
+    div.appendChild(correctAnswer);
+    div.appendChild(pronunciation);
+    div.appendChild(result);
+
     list.appendChild(div);
   });
 
+  localStorage.removeItem("progressiLingue");
   aggiornaStatistiche();
   aggiornaPulsanti();
-  localStorage.removeItem("progressiLingue");
 }
 
 function ripetiTutte() {
@@ -535,8 +663,12 @@ function ripetiTutte() {
   sessioneIndice = 0;
   sessioneAttiva = true;
   rispostaSelezionata = "";
+  timerSeconds = 0;
+  document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
   startTimer();
+  aggiornaMascotteHeader("neutral");
   mostraDomandaCorrente();
+  salvaProgresso();
 }
 
 function ripetiErrate() {
@@ -559,8 +691,12 @@ function ripetiErrate() {
   sessioneIndice = 0;
   sessioneAttiva = true;
   rispostaSelezionata = "";
+  timerSeconds = 0;
+  document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
   startTimer();
+  aggiornaMascotteHeader("neutral");
   mostraDomandaCorrente();
+  salvaProgresso();
 }
 
 function tornaAllInizio() {
@@ -589,6 +725,8 @@ function tornaAllInizio() {
 
   aggiornaStatistiche();
   aggiornaPulsanti();
+  aggiornaMascotteHeader("neutral");
+  localStorage.removeItem("progressiLingue");
 }
 
 function mostraPubblicitaDemo() {
@@ -599,47 +737,28 @@ function chiudiPubblicita() {
   document.getElementById("adPopup").style.display = "none";
 }
 
+function chiudiWelcomeScreen() {
+  const welcome = document.getElementById("welcomeScreen");
+  if (!welcome) return;
+  welcome.classList.add("hidden");
+}
+
+function chiudiWelcomeScreen() {
+  const welcome = document.getElementById("welcomeScreen");
+  if (!welcome) return;
+  welcome.classList.add("hidden");
+}
 document.addEventListener("DOMContentLoaded", function () {
   caricaProgresso();
+
   const inputRisposta = document.getElementById("risposta");
   if (inputRisposta) {
-    inputRisposta.addEventListener("keydown", function(event) {
+    inputRisposta.addEventListener("keydown", function (event) {
       if (event.key === "Enter" && !usaModalitaQuiz()) {
         azionePrincipale();
       }
     });
   }
 
-  aggiornaStatistiche();
-  aggiornaPulsanti();
-  document.getElementById("timerDisplay").textContent = "00:00";
+  tornaAllInizio();
 });
-function salvaProgresso() {
-  const dati = {
-    sessioneDomande,
-    sessioneIndice,
-    sessioneAttiva,
-    timerSeconds
-  };
-
-  localStorage.setItem("progressiLingue", JSON.stringify(dati));
-}
-
-function caricaProgresso() {
-  const dati = localStorage.getItem("progressiLingue");
-
-  if (!dati) return;
-
-  const parsed = JSON.parse(dati);
-
-  sessioneDomande = parsed.sessioneDomande || [];
-  sessioneIndice = parsed.sessioneIndice || 0;
-  sessioneAttiva = parsed.sessioneAttiva || false;
-  timerSeconds = parsed.timerSeconds || 0;
-
-  if (sessioneAttiva && sessioneDomande.length > 0) {
-    document.getElementById("timerDisplay").textContent = formatTime(timerSeconds);
-    mostraDomandaCorrente();
-    startTimer();
-  }
-}
