@@ -513,7 +513,13 @@ function domandaPrecedente() {
 }
 
 function domandaSuccessiva() {
-  if (!sessioneAttiva || sessioneIndice >= sessioneDomande.length - 1) return;
+  if (!sessioneAttiva || !sessioneDomande.length) return;
+
+  if (sessioneIndice >= sessioneDomande.length - 1) {
+    fineSessione();
+    return;
+  }
+
   salvaRispostaTemporanea();
   sessioneIndice++;
   mostraDomandaCorrente();
